@@ -5,27 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mira la luna🌙</title>
   <style>
-    /* --- Fondo principal: usar archivo adjunto como fondo + degradado para legibilidad --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
-
-    /*
-      Nota: uso las URLs/archivos que ya tenés:
-      - fondo: cc27388d-... (se setea como fondo)
-      - reveal images: d9d3547f-... y ee35b9f1-...
-      Si usás archivos locales, ajustá las rutas en background / <img src="">
-    */
 
     body {
       margin: 0;
       min-height: 100vh;
-      /* Permitir scroll vertical (opción A): */
       overflow-y: auto;
-      /* imagen de fondo + capa oscura para legibilidad */
       background:
         linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
-        url('https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454') center/cover no-repeat;
-      background-attachment: fixed; /* mantiene la imagen de fondo fija durante scroll */
+        url('https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a') center/cover no-repeat;
+      background-attachment: fixed;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -35,16 +25,14 @@
       position: relative;
     }
 
-    /* --- Capas de fondo fijas (no afectan al scroll) --- */
     .stars, .stars--mid, .stars--far,
     .moon-glow, .luna {
-      position: fixed; /* FIX: antes estaba absolute, ahora fixed para no bloquear scroll */
+      position: fixed;
       pointer-events: none;
       z-index: 0;
-      inset: 0; /* para las capas de estrellas */
+      inset: 0;
     }
 
-    /* Capas de estrellas & luna (intensidad reducida) */
     .stars, .stars--mid, .stars--far {
       background-repeat: repeat;
       mix-blend-mode: screen;
@@ -73,9 +61,8 @@
       100% { opacity: 0.35; transform: scale(1); }
     }
 
-    /* Resplandor lunar (fijo) */
     .moon-glow {
-      inset: auto; /* reset inset para usar top/right */
+      inset: auto;
       right: 6%;
       top: 6%;
       width: 320px;
@@ -86,7 +73,6 @@
       opacity: 0.7;
     }
 
-    /* Luna (fija) */
     .luna {
       inset: auto;
       top: 72px;
@@ -99,13 +85,11 @@
       opacity: 0.95;
     }
 
-    /* Aseguramos que el contenido quede por encima del fondo fijo */
     h1, .contenedor, .sorpresa, .corazon {
       position: relative;
       z-index: 4;
     }
 
-    /* Texto principal: SIN brillo/text-shadow */
     h1 {
       font-size: 1.6rem;
       max-width: 85%;
@@ -114,34 +98,29 @@
       margin: 18px 12px 0;
     }
 
-    /* Contenedor del QR / contraseña */
-    /* Contenedor pequeño y fijo en esquina (ej. esquina superior derecha) */
 .contenedor {
-  position: fixed;      /* fijo para que quede en la esquina al hacer scroll */
-  top: 18px;            /* separación desde arriba */
-  right: 18px;          /* separación desde la derecha (cambia a left:18px si querés a la izquierda) */
-  width: 260px;         /* ancho reducido */
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 260px;
   max-width: 90%;
-  padding: 12px;        /* padding reducido */
+  padding: 12px;
   border-radius: 10px;
-  background-color: rgba(0,0,0,0.60); /* un poco más oscuro para legibilidad */
+  background-color: rgba(0,0,0,0.60);
   backdrop-filter: blur(4px);
-  z-index: 999;         /* encima del resto */
+  z-index: 999;
   box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
 
-/* Títulos más pequeños dentro del contenedor */
 .contenedor h2 { font-size: 1rem; margin: 0 0 6px; }
 .contenedor p { font-size: 0.85rem; margin: 0 0 8px; color: #ffd9e8; }
 
-/* QR preview más compacto */
 #qr-preview {
   min-height: 64px;
   max-height: 88px;
   overflow: hidden;
 }
 
-/* Inputs y botones más pequeños */
 .pw-input input[type="password"] {
   min-width: 120px;
   padding: 6px 8px;
@@ -149,37 +128,31 @@
 }
 input[type="file"] { font-size: 0.9rem; }
 
-/* Botones compactos */
 .contenedor button {
   padding: 8px 10px;
   font-size: 0.92rem;
   border-radius: 8px;
 }
 
-/* Espaciado interior reducido */
 .pw-input { gap: 6px; margin-top: 8px; }
 
-/* Si querés que los botones queden uno encima del otro (más compacto) */
 .contenedor .btn-row { display:flex; gap:8px; justify-content:center; }
 
-/* En pantallas pequeñas (móvil) quitamos position:fixed para no tapar contenido */
 @media (max-width: 640px) {
   .contenedor {
-    position: static;    /* vuelve al flujo normal */
+    position: static;
     width: 92%;
     margin: 18px auto 0;
     right: auto;
     top: auto;
     padding: 14px;
   }
-  /* botones apilados en móvil */
   .contenedor .btn-row { flex-direction: column; }
 }
 
     .status-ok { color: #b7ffcc; }
     .status-err { color: #ffb6c1; }
 
-    /* Entrada por contraseña */
     .pw-input { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:8px; }
     .pw-input input[type="password"] {
       padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);
@@ -188,7 +161,6 @@ input[type="file"] { font-size: 0.9rem; }
     .pw-input button { background:#6bd3a8; color:#041014; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
     .pw-input button:hover { filter:brightness(0.95); }
 
-    /* Sorpresa oculta (se muestra inline cuando se ingresa correctamente) */
     .sorpresa {
       display: none;
       margin-top: 18px;
@@ -232,7 +204,6 @@ input[type="file"] { font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <!-- Capas de estrellas y luna (fijas para no interferir con el scroll) -->
   <div class="stars" aria-hidden="true"></div>
   <div class="stars--mid" aria-hidden="true"></div>
   <div class="stars--far" aria-hidden="true"></div>
@@ -248,7 +219,6 @@ input[type="file"] { font-size: 0.9rem; }
 
     <div id="qr-preview">QR aqui (era invisible lol)</div>
 
-    <!-- input para subir imagen del QR -->
     <input id="qrFile" type="file" accept="image/*" />
 
     <div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
@@ -258,7 +228,6 @@ input[type="file"] { font-size: 0.9rem; }
 
     <p id="status" style="min-height:20px; margin-top:10px;"></p>
 
-    <!-- Ingreso por contraseña -->
     <div style="margin-top: 10px;">
       <label for="pw" style="color:#ffd9e8; font-size:0.95rem;">O ingresá con la contraseña</label>
       <div class="pw-input" role="group" aria-label="Ingreso por contraseña">
@@ -270,13 +239,11 @@ input[type="file"] { font-size: 0.9rem; }
     </div>
   </div>
 
-  <!-- Sorpresa: imágenes (se mostrarán aquí en la misma página al desbloquear) -->
   <div id="sorpresa" class="sorpresa" aria-hidden="true">
     <p>Cuantos intentos habrás echo amor? te queme la cabeza pensando?</p>Elige un capitulo:
     <div class="reveal-images">
-      <!-- Uso las URLs de los archivos adjuntos que pegaste -->
       <img id="revealImg1" src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Imagen sorpresa 1" />
-      <img id="revealImg2" src="https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a" alt="Imagen sorpresa 2" />
+      <img id="revealImg2" src="https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454" alt="Imagen sorpresa 2 (papelito)" />
     </div>
     <p style="font-size:0.95rem; opacity:0.95;">Si querés que aparezca otra cosa (texto, audio o vídeo), lo agrego aquí mismo.</p>
   </div>
@@ -284,7 +251,6 @@ input[type="file"] { font-size: 0.9rem; }
   <div class="corazon" style="z-index:4; position:relative; margin-top:12px;">❤️‍🩹</div>
 
   <script>
-    // --- Comportamiento cámara (demo simple) ---
     const startCamera = document.getElementById('startCamera');
     const status = document.getElementById('status');
 
@@ -300,8 +266,7 @@ input[type="file"] { font-size: 0.9rem; }
       }
     });
 
-    // --- Lógica para mostrar la sorpresa dentro de la misma página ---
-    const SECRET_PASSWORD = 'amor2025'; // <-- ajustá si querés otra
+    const SECRET_PASSWORD = 'amor2025';
     const pwInput = document.getElementById('pw');
     const pwButton = document.getElementById('pwButton');
     const pwStatus = document.getElementById('pwStatus');
@@ -312,13 +277,8 @@ input[type="file"] { font-size: 0.9rem; }
     function showAccessGranted(source) {
       sorpresa.style.display = 'block';
       sorpresa.setAttribute('aria-hidden', 'false');
-      if (source) {
-        pwStatus.textContent = ✅ Acceso concedido (${source}).;
-        pwStatus.className = 'status-ok';
-      } else {
-        pwStatus.textContent = '✅ Acceso concedido.';
-        pwStatus.className = 'status-ok';
-      }
+      pwStatus.textContent = `✅ Acceso concedido (${source}).`;
+      pwStatus.className = 'status-ok';
       setTimeout(() => {
         sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 120);
@@ -329,7 +289,6 @@ input[type="file"] { font-size: 0.9rem; }
       pwStatus.className = 'status-err';
     }
 
-    // Contraseña
     pwButton.addEventListener('click', () => {
       const val = pwInput.value || '';
       if (val === SECRET_PASSWORD) {
@@ -342,7 +301,6 @@ input[type="file"] { font-size: 0.9rem; }
       if (e.key === 'Enter') pwButton.click();
     });
 
-    // Subir imagen QR — acá se considera válida inmediatamente al subir (demo)
     qrFile.addEventListener('change', (e) => {
       if (qrFile.files && qrFile.files.length > 0) {
         const file = qrFile.files[0];
@@ -358,41 +316,36 @@ input[type="file"] { font-size: 0.9rem; }
           preview.appendChild(img);
         };
         reader.readAsDataURL(file);
-
         showAccessGranted('QR (imagen subida)');
       }
     });
 
-    // Simular QR
     fakeScan.addEventListener('click', () => {
       showAccessGranted('QR (simulado)');
     });
 
-    // Inicial: ocultar la sorpresa
     sorpresa.style.display = 'none';
     sorpresa.setAttribute('aria-hidden', 'true');
 
-    // Verificador rápido: avisos si las URLs de attachments fallan en cargar
     (function checkAttachments() {
       const imgsToCheck = [
-        { url: 'https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454', name: 'Fondo (papelito)' },
+        { url: 'https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a', name: 'Fondo (nuevo)' },
         { url: 'https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329', name: 'Reveal 1' },
-        { url: 'https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a', name: 'Reveal 2' }
+        { url: 'https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454', name: 'Reveal 2 (papelito)' }
       ];
       imgsToCheck.forEach(i => {
         const tmp = new Image();
-        tmp.onload = () => console.log(${i.name} cargada OK: ${i.url});
+        tmp.onload = () => console.log(`${i.name} cargada OK: ${i.url}`);
         tmp.onerror = () => {
-          console.warn(${i.name} NO se encuentra: ${i.url});
+          console.warn(`${i.name} NO se encuentra: ${i.url}`);
           const m = document.createElement('div');
           m.style.color = '#ffb6c1';
           m.style.background = 'rgba(0,0,0,0.45)';
           m.style.padding = '8px';
           m.style.borderRadius = '8px';
           m.style.margin = '8px';
-          m.textContent = ⚠️ No se pudo cargar: ${i.url}. Si usás GitHub, asegurate de usar la URL "raw" o subir los archivos al repo/public.;
+          m.textContent = `⚠️ No se pudo cargar: ${i.url}. Si usás GitHub, asegurate de usar la URL "raw" o subir los archivos al repo/public.`;
           document.body.insertBefore(m, document.body.firstChild);
-          // fallback de fondo si no carga
           if (i.name.includes('Fondo')) {
             document.body.style.background = 'linear-gradient(180deg,#081227,#000009)';
           }
