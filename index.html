@@ -5,26 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sorpresa 🌙💖</title>
   <style>
-    /* --- Fondo principal: imagen "papelito" + degradado para oscurecer ligeramente --- */
+    /* --- Fondo principal: usar archivo adjunto como fondo + degradado para legibilidad --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
 
-    /*
-      Nota: este archivo usa las imágenes que indicaste:
-      - papelito.jpeg  (fondo principal)
-      - Luna.jpeg      (imagen 1 de la sorpresa)
-      - covid.jpeg     (imagen 2 de la sorpresa)
-
-      Coloca esos 3 archivos en la misma carpeta que este HTML (o ajustá las rutas abajo).
-    */
+    /* Nota: uso las URLs de los archivos adjuntos que mandaste */
     body {
       margin: 0;
       min-height: 100vh;
       overflow: hidden;
-      /* imagen de fondo + capa oscura para legibilidad */
       background:
         linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
-        url('./papelito.jpeg') center/cover no-repeat;
+        url('https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -246,9 +238,9 @@
   <div id="sorpresa" class="sorpresa" aria-hidden="true">
     <p>🎉 Bienvenido/a — abrí la sorpresa abajo:</p>
     <div class="reveal-images">
-      <!-- Usamos los nombres que subiste -->
-      <img id="revealImg1" src="./Luna.jpeg" alt="Imagen sorpresa 1" />
-      <img id="revealImg2" src="./covid.jpeg" alt="Imagen sorpresa 2" />
+      <!-- Uso las URLs de los archivos adjuntos: la primera y la segunda que pegaste -->
+      <img id="revealImg1" src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Imagen sorpresa 1" />
+      <img id="revealImg2" src="https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a" alt="Imagen sorpresa 2" />
     </div>
     <p style="font-size:0.95rem; opacity:0.95;">Si querés que aparezca otra cosa (texto, audio o vídeo), lo agrego aquí mismo.</p>
   </div>
@@ -344,12 +336,12 @@
     sorpresa.style.display = 'none';
     sorpresa.setAttribute('aria-hidden', 'true');
 
-    // Comprobador rápido: si una imagen no carga, mostrará aviso en consola y en pantalla.
-    (function checkImages() {
+    // Verificador rápido: avisos si las URLs de attachments fallan en cargar
+    (function checkAttachments() {
       const imgsToCheck = [
-        { url: './papelito.jpeg', name: 'Fondo papelito' },
-        { url: './Luna.jpeg', name: 'Sorpresa 1 (Luna)' },
-        { url: './covid.jpeg', name: 'Sorpresa 2 (covid)' }
+        { url: 'https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454', name: 'Fondo (papelito)' },
+        { url: 'https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329', name: 'Reveal 1' },
+        { url: 'https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a', name: 'Reveal 2' }
       ];
       imgsToCheck.forEach(i => {
         const tmp = new Image();
@@ -362,9 +354,9 @@
           m.style.padding = '8px';
           m.style.borderRadius = '8px';
           m.style.margin = '8px';
-          m.textContent = `⚠️ No se encontró: ${i.url}. Revisá ruta/nombre del archivo.`;
+          m.textContent = `⚠️ No se pudo cargar: ${i.url}. Si usás GitHub, asegurate de usar la URL "raw" o subir los archivos al repo/public.`;
           document.body.insertBefore(m, document.body.firstChild);
-          // fallback ligero si es el fondo
+          // fallback de fondo si no carga
           if (i.name.includes('Fondo')) {
             document.body.style.background = 'linear-gradient(180deg,#081227,#000009)';
           }
