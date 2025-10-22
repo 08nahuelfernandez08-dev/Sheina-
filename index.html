@@ -141,22 +141,23 @@
 
     /* --- Fin de la adición del fondo --- */
 
-    /* Texto principal con brillo suave (se mantienen estilos originales) */
+    /* Texto principal: quito brillo/text-shadow para reducir el resplandor en las letras */
     h1 {
       font-size: 1.6rem;
       max-width: 85%;
       line-height: 1.4;
       color: #ffe6f2;
-      animation: respiracion 3s ease-in-out infinite;
-      text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ff99c8;
+      /* Eliminado text-shadow para quitar brillo */
       position: relative;
       z-index: 4;
     }
 
+    /* Mantengo la animación de opacidad ligera (respiración) sin brillo extra */
     @keyframes respiracion {
-      0%, 100% { opacity: 0.9; text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ff99c8; }
-      50% { opacity: 1; text-shadow: 0 0 25px #ffc0cb, 0 0 40px #ff99c8; }
+      0%, 100% { opacity: 0.95; }
+      50% { opacity: 1; }
     }
+    h1 { animation: respiracion 3s ease-in-out infinite; }
 
     /* Sección del QR (estilo original, con pequeño ajuste de z-index para quedar encima del fondo) */
     .contenedor {
@@ -199,11 +200,53 @@
 
     #qr-preview { color: #ddd; min-height: 70px; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.02); border-radius: 8px; }
 
+    /* Nuevos estilos para ingreso por contraseña */
+    .pw-input {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+    .pw-input input[type="password"] {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      color: #fff;
+      outline: none;
+      min-width: 160px;
+    }
+    .pw-input button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #6bd3a8;
+      color: #041014;
+      border: none;
+      cursor: pointer;
+    }
+    .pw-input button:hover { filter: brightness(0.95); }
+
+    .access-link {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #ffd1e6;
+      color: #2a1020;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    .status-ok { color: #b7ffcc; }
+    .status-err { color: #ffb6c1; }
+
     /* Adaptaciones móviles */
     @media (max-width: 640px) {
       .luna { width: 78px; height: 78px; right: 34px; top: 34px; }
       .moon-glow { width: 260px; height: 260px; right: 4%; top: 4%; transform: translate(6%, 4%); }
       h1 { font-size: 1.15rem; }
+      .pw-input { flex-direction: column; gap: 8px; }
+      .pw-input input[type="password"] { width: 100%; min-width: 0; }
     }
   </style>
 </head>
@@ -230,11 +273,26 @@
     <button id="startCamera">Iniciar cámara</button>
 
     <p id="status"></p>
+
+    <!-- Nuevo: ingreso por contraseña -->
+    <div style="margin-top: 10px;">
+      <label for="pw" style="color:#ffd9e8; font-size:0.95rem;">O ingresá con contraseña</label>
+      <div class="pw-input" role="group" aria-label="Ingreso por contraseña">
+        <input id="pw" type="password" placeholder="Contraseña secreta" aria-label="Contraseña secreta" />
+        <button id="pwButton" type="button">Ingresar</button>
+      </div>
+
+      <div id="pwStatus" style="margin-top:8px;" aria-live="polite"></div>
+
+      <!-- Enlace visible al ingresar correctamente; cambia href a la página real si hace falta -->
+      <a id="accessLink" class="access-link" href="#" style="display:none">Entrar a la sorpresa</a>
+    </div>
   </div>
 
   <div class="corazon">❤️‍🩹</div>
 
   <script>
+    // Cámara (mantengo la funcionalidad original)
     const startCamera = document.getElementById('startCamera');
     const status = document.getElementById('status');
 
@@ -242,9 +300,53 @@
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         status.textContent = "✅ Cámara iniciada correctamente.";
+        status.className = 'status-ok';
+        // corto inmediatamente para no mantener la cámara abierta en este ejemplo
         stream.getTracks().forEach(track => track.stop());
       } catch (err) {
         status.textContent = "❌ Error al iniciar la cámara.";
+        status.className = 'status-err';
+      }
+    });
+
+    // Ingreso por contraseña
+    // Cambia la contraseña por la que quieras usar. Por seguridad en un entorno real,
+    // valida en el servidor y no en el cliente.
+    const SECRET_PASSWORD = 'amor2025'; // <-- ajusta aquí la contraseña deseada
+
+    const pwInput = document.getElementById('pw');
+    const pwButton = document.getElementById('pwButton');
+    const pwStatus = document.getElementById('pwStatus');
+    const accessLink = document.getElementById('accessLink');
+
+    function showAccessGranted() {
+      pwStatus.textContent = '✅ Contraseña correcta. Acceso concedido.';
+      pwStatus.className = 'status-ok';
+      // Mostrar enlace o realizar la acción de desbloqueo
+      accessLink.style.display = 'inline-block';
+      // Si quieres redirigir automáticamente, descomenta la siguiente línea:
+      // window.location.href = 'sorpresa_final.html';
+    }
+
+    function showAccessDenied() {
+      pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
+      pwStatus.className = 'status-err';
+      accessLink.style.display = 'none';
+    }
+
+    pwButton.addEventListener('click', () => {
+      const val = pwInput.value || '';
+      if (val === SECRET_PASSWORD) {
+        showAccessGranted();
+      } else {
+        showAccessDenied();
+      }
+    });
+
+    // Permitir Enter para enviar
+    pwInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        pwButton.click();
       }
     });
   </script>
