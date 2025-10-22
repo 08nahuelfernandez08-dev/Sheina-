@@ -115,42 +115,66 @@
     }
 
     /* Contenedor del QR / contraseña */
-    .contenedor {
-      margin-top: 28px;
-      background-color: rgba(0, 0, 0, 0.48);
-      padding: 18px;
-      border-radius: 12px;
-      width: 92%;
-      max-width: 420px;
-      backdrop-filter: blur(3px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-    }
+    /* Contenedor pequeño y fijo en esquina (ej. esquina superior derecha) */
+.contenedor {
+  position: fixed;      /* fijo para que quede en la esquina al hacer scroll */
+  top: 18px;            /* separación desde arriba */
+  right: 18px;          /* separación desde la derecha (cambia a left:18px si querés a la izquierda) */
+  width: 260px;         /* ancho reducido */
+  max-width: 90%;
+  padding: 12px;        /* padding reducido */
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.60); /* un poco más oscuro para legibilidad */
+  backdrop-filter: blur(4px);
+  z-index: 999;         /* encima del resto */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
 
-    h2 { color: #ffb6c1; font-size: 1.15rem; margin-bottom: 8px; }
+/* Títulos más pequeños dentro del contenedor */
+.contenedor h2 { font-size: 1rem; margin: 0 0 6px; }
+.contenedor p { font-size: 0.85rem; margin: 0 0 8px; color: #ffd9e8; }
 
-    #qr-preview {
-      color: #ddd;
-      min-height: 90px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: rgba(255,255,255,0.02);
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
+/* QR preview más compacto */
+#qr-preview {
+  min-height: 64px;
+  max-height: 88px;
+  overflow: hidden;
+}
 
-    input[type="file"] { display: block; margin: 6px auto 8px; color: #fff; }
+/* Inputs y botones más pequeños */
+.pw-input input[type="password"] {
+  min-width: 120px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+input[type="file"] { font-size: 0.9rem; }
 
-    button {
-      background-color: #ff4081;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
-      margin-top: 8px;
-      cursor: pointer;
-    }
-    button:hover { background-color: #ff5c9a; }
+/* Botones compactos */
+.contenedor button {
+  padding: 8px 10px;
+  font-size: 0.92rem;
+  border-radius: 8px;
+}
+
+/* Espaciado interior reducido */
+.pw-input { gap: 6px; margin-top: 8px; }
+
+/* Si querés que los botones queden uno encima del otro (más compacto) */
+.contenedor .btn-row { display:flex; gap:8px; justify-content:center; }
+
+/* En pantallas pequeñas (móvil) quitamos position:fixed para no tapar contenido */
+@media (max-width: 640px) {
+  .contenedor {
+    position: static;    /* vuelve al flujo normal */
+    width: 92%;
+    margin: 18px auto 0;
+    right: auto;
+    top: auto;
+    padding: 14px;
+  }
+  /* botones apilados en móvil */
+  .contenedor .btn-row { flex-direction: column; }
+}
 
     .status-ok { color: #b7ffcc; }
     .status-err { color: #ffb6c1; }
