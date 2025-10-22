@@ -5,8 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mira la luna🌙</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-y: auto;
+      background:
+        linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
+        url('https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a') center/cover no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      position: relative;
     }
-    
+
+    .stars, .stars--mid, .stars--far,
+    .moon-glow, .luna {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      inset: 0;
+    }
+
+    .stars, .stars--mid, .stars--far {
+      background-repeat: repeat;
+      mix-blend-mode: screen;
+      opacity: 0.32;
+    }
+
+    .stars {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.9) 0.6px, rgba(255,255,255,0.0) 1px);
+      background-size: 5px 5px;
+      animation: twinkle 10s infinite linear;
+    }
+    .stars--mid {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.85) 1px, rgba(255,255,255,0.0) 1.5px);
+      background-size: 12px 12px;
+      animation: twinkle 16s infinite linear;
+    }
+    .stars--far {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1.6px, rgba(255,255,255,0.0) 2.4px);
+      background-size: 24px 24px;
+      animation: twinkle 26s infinite linear;
+      filter: blur(0.9px);
+    }
+    @keyframes twinkle {
+      0%   { opacity: 0.35; transform: scale(1); }
+      50%  { opacity: 0.12; transform: scale(0.998); }
+      100% { opacity: 0.35; transform: scale(1); }
+    }
+
+    .moon-glow {
+      inset: auto;
+      right: 6%;
+      top: 6%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,245,210,0.03) 0%, rgba(255,245,210,0.008) 18%, rgba(255,245,210,0.0) 45%);
+      transform: translate(10%, 2%);
+      opacity: 0.7;
+    }
+
+    .luna {
+      inset: auto;
+      top: 72px;
+      right: 72px;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f2f4f6 28%, #d7dbe0 54%, rgba(200,200,200,0.10) 75%, rgba(0,0,0,0.0) 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 28px rgba(4,8,14,0.36), inset -10px -6px 14px rgba(0,0,0,0.14);
+      opacity: 0.95;
+    }
+
     h1, .contenedor, .sorpresa, .corazon {
       position: relative;
       z-index: 4;
