@@ -9,17 +9,25 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
 
-    /* Nota: uso las URLs de los archivos adjuntos que mandaste */
+    /*
+      Nota: uso las URLs/archivos que ya tenés:
+      - fondo: cc27388d-... (se setea como fondo)
+      - reveal images: d9d3547f-... y ee35b9f1-...
+      Si usás archivos locales, ajustá las rutas en background / <img src="">
+    */
+
     body {
       margin: 0;
       min-height: 100vh;
-      overflow: auto;
+      /* Permitir scroll vertical (opción A): */
+      overflow-y: auto;
+      /* imagen de fondo + capa oscura para legibilidad */
       background:
         linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
         url('https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454') center/cover no-repeat;
+      background-attachment: fixed; /* mantiene la imagen de fondo fija durante scroll */
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       color: white;
       font-family: 'Poppins', sans-serif;
@@ -27,13 +35,18 @@
       position: relative;
     }
 
+    /* --- Capas de fondo fijas (no afectan al scroll) --- */
+    .stars, .stars--mid, .stars--far,
+    .moon-glow, .luna {
+      position: fixed; /* FIX: antes estaba absolute, ahora fixed para no bloquear scroll */
+      pointer-events: none;
+      z-index: 0;
+      inset: 0; /* para las capas de estrellas */
+    }
+
     /* Capas de estrellas & luna (intensidad reducida) */
     .stars, .stars--mid, .stars--far {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
       background-repeat: repeat;
-      z-index: 0;
       mix-blend-mode: screen;
       opacity: 0.32;
     }
@@ -60,8 +73,9 @@
       100% { opacity: 0.35; transform: scale(1); }
     }
 
+    /* Resplandor lunar (fijo) */
     .moon-glow {
-      position: absolute;
+      inset: auto; /* reset inset para usar top/right */
       right: 6%;
       top: 6%;
       width: 320px;
@@ -69,13 +83,12 @@
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255,245,210,0.03) 0%, rgba(255,245,210,0.008) 18%, rgba(255,245,210,0.0) 45%);
       transform: translate(10%, 2%);
-      z-index: 1;
-      pointer-events: none;
       opacity: 0.7;
     }
 
+    /* Luna (fija) */
     .luna {
-      position: absolute;
+      inset: auto;
       top: 72px;
       right: 72px;
       width: 110px;
@@ -83,9 +96,13 @@
       background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f2f4f6 28%, #d7dbe0 54%, rgba(200,200,200,0.10) 75%, rgba(0,0,0,0.0) 100%);
       border-radius: 50%;
       box-shadow: 0 8px 28px rgba(4,8,14,0.36), inset -10px -6px 14px rgba(0,0,0,0.14);
-      z-index: 2;
-      pointer-events: none;
       opacity: 0.95;
+    }
+
+    /* Aseguramos que el contenido quede por encima del fondo fijo */
+    h1, .contenedor, .sorpresa, .corazon {
+      position: relative;
+      z-index: 4;
     }
 
     /* Texto principal: SIN brillo/text-shadow */
@@ -94,9 +111,7 @@
       max-width: 85%;
       line-height: 1.4;
       color: #ffe6f2;
-      position: relative;
-      z-index: 4;
-      margin: 0 12px;
+      margin: 18px 12px 0;
     }
 
     /* Contenedor del QR / contraseña */
@@ -107,8 +122,6 @@
       border-radius: 12px;
       width: 92%;
       max-width: 420px;
-      position: relative;
-      z-index: 4;
       backdrop-filter: blur(3px);
       box-shadow: 0 8px 30px rgba(0,0,0,0.55);
     }
@@ -161,7 +174,6 @@
       border-radius: 12px;
       padding: 18px;
       z-index: 5;
-      position: relative;
       backdrop-filter: blur(4px);
       box-shadow: 0 12px 40px rgba(0,0,0,0.6);
       animation: fadeIn 600ms ease forwards;
@@ -196,7 +208,7 @@
   </style>
 </head>
 <body>
-  <!-- Capas de estrellas y luna (visual sobre la foto de fondo) -->
+  <!-- Capas de estrellas y luna (fijas para no interferir con el scroll) -->
   <div class="stars" aria-hidden="true"></div>
   <div class="stars--mid" aria-hidden="true"></div>
   <div class="stars--far" aria-hidden="true"></div>
@@ -238,7 +250,7 @@
   <div id="sorpresa" class="sorpresa" aria-hidden="true">
     <p>🎉 Bienvenido/a — abrí la sorpresa abajo:</p>
     <div class="reveal-images">
-      <!-- Uso las URLs de los archivos adjuntos: la primera y la segunda que pegaste -->
+      <!-- Uso las URLs de los archivos adjuntos que pegaste -->
       <img id="revealImg1" src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Imagen sorpresa 1" />
       <img id="revealImg2" src="https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a" alt="Imagen sorpresa 2" />
     </div>
