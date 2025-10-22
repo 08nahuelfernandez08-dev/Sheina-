@@ -1,172 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Página secreta para mi novia ❤️</title>
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding:20px; background:#f7f7fb; color:#222; text-align:center; }
-    .card { max-width:560px; margin:20px auto; background:white; border-radius:12px; padding:20px; box-shadow:0 8px 24px rgba(0,0,0,0.06); }
-    video { width:100%; border-radius:8px; background:#000; }
-    #qr-img { width:200px; height:200px; margin: 12px auto; display:block; }
-    .hidden { display:none; }
-    button { padding:10px 14px; border-radius:8px; border:0; background:#3b82f6; color:white; font-weight:600; cursor:pointer; }
-    small { color:#666; display:block; margin-top:8px; }
-    #secretContent { text-align:left; }
-  </style>
-  <!-- Librería de escaneo QR (cliente) -->
-  <script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sheina - Entrada ultra mega secreta 💌</title>
+<style>
+  /* Fondo animado del cielo estrellado */
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 20%, #222 0%, #000 100%);
+    background-image: 
+      radial-gradient(white, rgba(255,255,255,0) 2px),
+      radial-gradient(white, rgba(255,255,255,0) 1px),
+      radial-gradient(white, rgba(255,255,255,0) 2px),
+      radial-gradient(white, rgba(255,255,255,0) 1px);
+    background-size: 1000px 1000px, 800px 800px, 600px 600px, 400px 400px;
+    background-position: 0 0, 200px 400px, 400px 800px, 600px 1200px;
+    animation: stars 100s linear infinite;
+    overflow: hidden;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+  }
+
+  @keyframes stars {
+    from { background-position: 0 0, 200px 400px, 400px 800px, 600px 1200px; }
+    to { background-position: 10000px 0, 10200px 400px, 10400px 800px, 10600px 1200px; }
+  }
+
+  /* Luna */
+  .moon {
+    position: absolute;
+    top: 60px;
+    right: 80px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, #fff 60%, #ccc 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px 15px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Frase principal */
+  h1 {
+    margin-top: 200px;
+    font-size: 1.8em;
+    font-weight: 400;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+    animation: breathing 4s ease-in-out infinite;
+  }
+
+  @keyframes breathing {
+    0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.4); }
+    50% { text-shadow: 0 0 25px rgba(255,255,255,1); }
+  }
+
+  /* Contenedor de acceso */
+  .access-box {
+    margin: 50px auto;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 25px;
+    width: 85%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    animation: fadeIn 2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4em;
+    color: #ffb6c1;
+  }
+
+  button {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+  }
+
+  button:hover {
+    background: #ff1f5b;
+  }
+
+  input[type="file"] {
+    margin: 10px 0;
+  }
+
+  p {
+    font-size: 0.95em;
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>Entrada secreta 💌</h1>
-    <p>Para entrar a la sorpresa, escaneá el código QR con la cámara. Si el código coincide, se desbloquea la página.</p>
+  <div class="moon"></div>
+  <h1>Teníamos tanto amor en lo nuestro que no supimos cómo sostenerlo ❤️‍🩹</h1>
 
-    <!-- Ejemplo de QR (reemplazá el texto CODIGOSECRETO123 por lo que quieras) -->
-    <img id="qr-img" alt="QR de ejemplo" src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=CODIGOSECRETO123&choe=UTF-8">
-
-    <p><strong>¿No podés usar la cámara?</strong></p>
-    <input type="file" id="file-input" accept="image/*"><br><small>Subí la foto del QR si preferís</small>
-
-    <hr>
-
-    <div id="scanner-area">
-      <video id="video" muted playsinline></video>
-      <div style="margin-top:10px">
-        <button id="startBtn">Iniciar cámara</button>
-        <button id="stopBtn" class="hidden">Detener</button>
-      </div>
-      <small id="status">Estado: esperando inicio.</small>
+  <div class="access-box">
+    <h2>Entrada ultra mega secreta 💌</h2>
+    <p>Para entrar a la sorpresa, escaneá el código QR con la cámara.  
+      Si el código coincide, se desbloquea la página.</p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/QR_code_example.svg" alt="QR de ejemplo" width="130">
+    <div>
+      <p>¿No podés usar la cámara?<br>
+      Subí la foto del QR si preferís:</p>
+      <input type="file" id="file-input">
     </div>
-
-    <hr>
-
-    <div id="result" class="hidden">
-      <h2>Escaneado ✔️</h2>
-      <p id="scannedText"></p>
-      <p>Si el código es correcto, verás la sorpresa abajo.</p>
-    </div>
-
-    <div id="locked" style="margin-top:12px;">
-      <h3>Estado: 🔒 Bloqueado</h3>
-      <p>Escaneá el QR correcto para desbloquear.</p>
-    </div>
-
-    <div id="unlocked" class="hidden" style="margin-top:14px;">
-      <h3>¡Bienvenida! 🔓</h3>
-      <div id="secretContent">
-        <!-- Personalizá el contenido de la sorpresa acá -->
-        <h2>Para mi amor, <span id="nombre">[Nombre]</span> 💖</h2>
-        <p>Te amo. Gracias por ser tan especial. Esto es solo para vos. 😘</p>
-        <p>Puedes cambiar este mensaje en el HTML para hacerlo más personal (añadí fotos, música, etc.).</p>
-      </div>
-    </div>
-
+    <button onclick="startCamera()">Iniciar cámara</button>
+    <p id="status">📸 Estado: esperando inicio...</p>
   </div>
 
 <script>
-/*
-  Cómo funciona:
-  - Definí el SECRETCODE abajo (string exacto). Generá un QR que contenga exactamente ese texto.
-  - El ejemplo de imagen usa: CODIGOSECRETO123
-  - Cambiá SECRETCODE por lo que quieras y regenerá el QR (o reemplazá la imagen QR).
-*/
-const SECRETCODE = "CODIGOSECRETO123"; // <-- PONÉ TU CÓDIGO AQUÍ (sensitivo a mayúsculas/minúsculas)
-
-const video = document.getElementById('video');
-const startBtn = document.getElementById('startBtn');
-const stopBtn = document.getElementById('stopBtn');
-const status = document.getElementById('status');
-const result = document.getElementById('result');
-const scannedText = document.getElementById('scannedText');
-const locked = document.getElementById('locked');
-const unlocked = document.getElementById('unlocked');
-const fileInput = document.getElementById('file-input');
-
-let qrScanner = null;
-
-QrScanner.WORKER_PATH = 'https://unpkg.com/qr-scanner@1.4.2/qr-scanner-worker.min.js';
-
-// Iniciar cámara y escaneo
-startBtn.addEventListener('click', async () => {
-  startBtn.disabled = true;
-  status.textContent = 'Estado: inicializando cámara...';
+async function startCamera() {
+  const status = document.getElementById("status");
   try {
-    qrScanner = new QrScanner(video, resultText => {
-      onScan(resultText);
-    }, { returnDetailedScanResult: true });
-
-    await qrScanner.start();
-    status.textContent = 'Estado: cámara activa. Apuntá al QR.';
-    startBtn.classList.add('hidden');
-    stopBtn.classList.remove('hidden');
-  } catch (e) {
-    console.error(e);
-    status.textContent = 'Error al iniciar cámara. Probá con la opción de subir imagen.';
-    startBtn.disabled = false;
-  }
-});
-
-stopBtn.addEventListener('click', () => {
-  if (qrScanner) {
-    qrScanner.stop();
-    qrScanner.destroy();
-    qrScanner = null;
-  }
-  status.textContent = 'Estado: detenido.';
-  startBtn.classList.remove('hidden');
-  stopBtn.classList.add('hidden');
-  startBtn.disabled = false;
-});
-
-// Manejo de imagen subida (fallback)
-fileInput.addEventListener('change', async (e) => {
-  const f = e.target.files[0];
-  if (!f) return;
-  status.textContent = 'Estado: analizando imagen...';
-  try {
-    const result = await QrScanner.scanImage(f, { returnDetailedScanResult: true });
-    onScan(result.data || result);
-  } catch(err) {
-    console.error(err);
-    status.textContent = 'No se detectó un QR válido en la imagen.';
-  }
-});
-
-function onScan(text) {
-  result.classList.remove('hidden');
-  scannedText.textContent = Texto detectado: "${text}";
-  status.textContent = 'Estado: QR detectado.';
-  // comparar con el secreto (match exacto)
-  if (String(text).trim() === SECRETCODE) {
-    unlock();
-  } else {
-    fail();
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    status.textContent = "✅ Cámara iniciada correctamente. (El escaneo se agregará luego)";
+  } catch (err) {
+    status.textContent = "❌ No se pudo acceder a la cámara. Activá permisos manualmente.";
+    alert("Dale permiso a la cámara desde el navegador.");
   }
 }
-
-function unlock() {
-  locked.classList.add('hidden');
-  unlocked.classList.remove('hidden');
-  status.textContent = 'Estado: desbloqueado 🎉';
-  // detener cámara si está encendida
-  if (qrScanner) {
-    qrScanner.stop();
-    qrScanner.destroy();
-    qrScanner = null;
-    startBtn.classList.remove('hidden');
-    stopBtn.classList.add('hidden');
-  }
-}
-
-function fail() {
-  locked.classList.remove('hidden');
-  unlocked.classList.add('hidden');
-  status.textContent = 'Estado: código incorrecto. Intentá otra vez.';
-}
-
-// Opcional: personalizar nombre en el contenido desbloqueado
-document.getElementById('nombre').textContent = "Mi amor"; // cambiá si querés
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
