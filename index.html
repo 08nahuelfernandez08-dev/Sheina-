@@ -1,1 +1,198 @@
-<!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Sorpresa 🌙💖</title> <style> /* Fondo animado cielo estrellado con luna */ body { margin: 0; height: 100vh; overflow: hidden; background: radial-gradient(circle at top right, #2b2b52, #0b0c1a); background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; font-family: 'Poppins', sans-serif; text-align: center; animation: fondoAnimado 10s ease-in-out infinite alternate; } @keyframes fondoAnimado { 0% { background: radial-gradient(circle at top right, #2b2b52, #0b0c1a); } 100% { background: radial-gradient(circle at bottom left, #1a1a40, #000010); } } /* Luna */ .luna { position: absolute; top: 80px; right: 80px; width: 100px; height: 100px; background: radial-gradient(circle, #fff8e7 60%, transparent 70%); border-radius: 50%; box-shadow: 0 0 25px 10px #fff8e7; } /* Texto principal con brillo suave */ h1 { font-size: 1.6rem; max-width: 85%; line-height: 1.4; color: #ffe6f2; animation: respiracion 3s ease-in-out infinite; text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ff99c8; } @keyframes respiracion { 0%, 100% { opacity: 0.9; text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ff99c8; } 50% { opacity: 1; text-shadow: 0 0 25px #ffc0cb, 0 0 40px #ff99c8; } } /* Sección del QR */ .contenedor { margin-top: 40px; background-color: rgba(0, 0, 0, 0.4); padding: 20px; border-radius: 15px; width: 90%; max-width: 350px; } h2 { color: #ffb6c1; font-size: 1.2rem; } button { background-color: #ff4081; color: white; border: none; padding: 10px 20px; border-radius: 10px; margin-top: 10px; cursor: pointer; } button:hover { background-color: #ff5c9a; } .corazon { font-size: 2rem; margin-top: 15px; } </style> </head> <body> <div class="luna"></div> <h1>Teníamos tanto amor en lo nuestro<br>que no supimos cómo sostenerlo 💔‍🩹</h1> <div class="contenedor"> <h2>Entrada ultra mega secreta 💌</h2> <p>Para entrar a la sorpresa, escaneá el código QR con la cámara.<br>Si el código coincide, se desbloquea la página.</p> <div id="qr-preview">QR de ejemplo</div> <br> <input type="file" accept="image/*" /> <br> <button id="startCamera">Iniciar cámara</button> <p id="status"></p> </div> <div class="corazon">❤️‍🩹</div> <script> const startCamera = document.getElementById('startCamera'); const status = document.getElementById('status'); startCamera.addEventListener('click', async () => { try { const stream = await navigator.mediaDevices.getUserMedia({ video: true }); status.textContent = "✅ Cámara iniciada correctamente."; stream.getTracks().forEach(track => track.stop()); } catch (err) { status.textContent = "❌ Error al iniciar la cámara."; } }); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorpresa 🌙💖</title>
+  <style>
+    /* Reset y layout */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #fff;
+      overflow: hidden;
+      background: linear-gradient(180deg, #021026 0%, #03132a 50%, #040b14 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Capas de estrellas (varias capas para profundidad) */
+    .stars, .stars--mid, .stars--far {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-repeat: repeat;
+    }
+
+    /* Capa cercana: muchas pequeñas, parpadeo más rápido */
+    .stars {
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.95) 0.6px, rgba(255,255,255,0.0) 1px);
+      background-size: 2.5px 2.5px;
+      opacity: 0.9;
+      animation: twinkle 4s infinite linear;
+      filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
+    }
+
+    /* Capa intermedia: menos densas y más grandes */
+    .stars--mid {
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.9) 1px, rgba(255,255,255,0.0) 1.5px);
+      background-size: 5px 5px;
+      opacity: 0.6;
+      animation: twinkle 7s infinite linear;
+      transform: translateZ(0);
+    }
+
+    /* Capa lejana: estrellas grandes y suaves */
+    .stars--far {
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.85) 1.6px, rgba(255,255,255,0.0) 2.4px);
+      background-size: 10px 10px;
+      opacity: 0.35;
+      animation: twinkle 12s infinite linear;
+      filter: blur(0.6px);
+    }
+
+    @keyframes twinkle {
+      0%   { opacity: 0.9; transform: scale(1); }
+      50%  { opacity: 0.3; transform: scale(0.98); }
+      100% { opacity: 0.9; transform: scale(1); }
+    }
+
+    /* La luna */
+    .moon {
+      position: absolute;
+      right: 8%;
+      top: 10%;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%,
+                  #ffffff 0%,
+                  #f4f6f8 22%,
+                  #d9dde2 48%,
+                  rgba(200,200,200,0.15) 70%,
+                  rgba(0,0,0,0.0) 100%);
+      box-shadow:
+        0 18px 60px rgba(4,10,20,0.65),
+        inset -18px -12px 30px rgba(0,0,0,0.2),
+        0 0 24px rgba(255,255,200,0.04);
+      transform: translateZ(0);
+      z-index: 3;
+    }
+
+    /* Cráteres en la luna */
+    .moon::before,
+    .moon::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+                  rgba(0,0,0,0.25) 0%,
+                  rgba(0,0,0,0.05) 45%,
+                  rgba(255,255,255,0.03) 100%);
+      mix-blend-mode: multiply;
+    }
+    .moon::before {
+      width: 50px;
+      height: 50px;
+      left: 46px;
+      top: 70px;
+      transform: rotate(-12deg);
+      opacity: 0.85;
+    }
+    .moon::after {
+      width: 28px;
+      height: 28px;
+      right: 44px;
+      top: 108px;
+      opacity: 0.9;
+    }
+
+    /* Resplandor lunar sutil */
+    .moon-glow {
+      position: absolute;
+      right: 8%;
+      top: 10%;
+      width: 460px;
+      height: 460px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,220,0.06) 0%, rgba(255,255,220,0.02) 20%, rgba(255,255,220,0.0) 50%);
+      transform: translate(-10%, -10%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Texto o contenido en el centro */
+    .content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 2rem;
+      max-width: 90%;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 4vw, 3rem);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.6);
+    }
+    p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      opacity: 0.9;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Pequeño estrello fugaz (opcional) */
+    .shooting-star {
+      position: absolute;
+      top: 18%;
+      left: 12%;
+      width: 3px;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0.4));
+      transform: rotate(-25deg);
+      box-shadow: 0 0 8px rgba(255,255,255,0.8);
+      border-radius: 2px;
+      z-index: 4;
+      animation: shoot 2.2s ease-in-out infinite;
+      opacity: 0;
+      pointer-events: none;
+    }
+    @keyframes shoot {
+      0%   { opacity: 0; transform: translateX(0) scaleX(1) rotate(-25deg); }
+      10%  { opacity: 1; }
+      60%  { opacity: 1; transform: translateX(900px) scaleX(10) rotate(-25deg); }
+      100% { opacity: 0; transform: translateX(1200px) scaleX(12) rotate(-25deg); }
+    }
+
+    /* Adaptaciones móviles */
+    @media (max-width: 640px) {
+      .moon { width: 140px; height: 140px; right: 6%; top: 6%; }
+      .moon-glow { width: 340px; height: 340px; transform: translate(-8%, -8%); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Capas de estrellas -->
+  <div class="stars" aria-hidden="true"></div>
+  <div class="stars--mid" aria-hidden="true"></div>
+  <div class="stars--far" aria-hidden="true"></div>
+
+  <!-- Luna -->
+  <div class="moon-glow" aria-hidden="true"></div>
+  <div class="moon" aria-hidden="true"></div>
+
+  <!-- Estrella fugaz -->
+  <div class="shooting-star" aria-hidden="true"></div>
+
+  <!-- Contenido principal -->
+  <main class="content" role="main">
+    <h1>Sorpresa 🌙💖</h1>
+    <p>Una noche estrellada solo para ti.</p>
+  </main>
+</body>
+</html>
