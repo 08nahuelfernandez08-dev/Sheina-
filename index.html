@@ -5,61 +5,199 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mira la luna🌙</title>
   <style>
+    /* --- Fondo principal: usar archivo adjunto como fondo + degradado para legibilidad --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
 
+    /*
+      Nota: uso las URLs/archivos que ya tenés:
+      - fondo: cc27388d-... (se setea como fondo)
+      - reveal images: d9d3547f-... y ee35b9f1-...
+      Si usás archivos locales, ajustá las rutas en background / <img src="">
+    */
+
     body {
+      margin: 0;
       min-height: 100vh;
+      /* Permitir scroll vertical (opción A): */
+      overflow-y: auto;
+      /* imagen de fondo + capa oscura para legibilidad */
       background:
-        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
-        url('https://github.com/user-attachments/assets/0c1c338d-7433-4d35-afc1-d41c264d0f4b') center/cover no-repeat;
-      background-attachment: fixed;
+        linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
+        url('https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454') center/cover no-repeat;
+      background-attachment: fixed; /* mantiene la imagen de fondo fija durante scroll */
       display: flex;
       flex-direction: column;
       align-items: center;
       color: white;
       font-family: 'Poppins', sans-serif;
       text-align: center;
-    }
-
-    h1, .contenedor, .sorpresa {
       position: relative;
-      z-index: 5;
     }
 
+    /* --- Capas de fondo fijas (no afectan al scroll) --- */
+    .stars, .stars--mid, .stars--far,
+    .moon-glow, .luna {
+      position: fixed; /* FIX: antes estaba absolute, ahora fixed para no bloquear scroll */
+      pointer-events: none;
+      z-index: 0;
+      inset: 0; /* para las capas de estrellas */
+    }
+
+    /* Capas de estrellas & luna (intensidad reducida) */
+    .stars, .stars--mid, .stars--far {
+      background-repeat: repeat;
+      mix-blend-mode: screen;
+      opacity: 0.32;
+    }
+
+    .stars {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.9) 0.6px, rgba(255,255,255,0.0) 1px);
+      background-size: 5px 5px;
+      animation: twinkle 10s infinite linear;
+    }
+    .stars--mid {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.85) 1px, rgba(255,255,255,0.0) 1.5px);
+      background-size: 12px 12px;
+      animation: twinkle 16s infinite linear;
+    }
+    .stars--far {
+      background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1.6px, rgba(255,255,255,0.0) 2.4px);
+      background-size: 24px 24px;
+      animation: twinkle 26s infinite linear;
+      filter: blur(0.9px);
+    }
+    @keyframes twinkle {
+      0%   { opacity: 0.35; transform: scale(1); }
+      50%  { opacity: 0.12; transform: scale(0.998); }
+      100% { opacity: 0.35; transform: scale(1); }
+    }
+
+    /* Resplandor lunar (fijo) */
+    .moon-glow {
+      inset: auto; /* reset inset para usar top/right */
+      right: 6%;
+      top: 6%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,245,210,0.03) 0%, rgba(255,245,210,0.008) 18%, rgba(255,245,210,0.0) 45%);
+      transform: translate(10%, 2%);
+      opacity: 0.7;
+    }
+
+    /* Luna (fija) */
+    .luna {
+      inset: auto;
+      top: 72px;
+      right: 72px;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f2f4f6 28%, #d7dbe0 54%, rgba(200,200,200,0.10) 75%, rgba(0,0,0,0.0) 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 28px rgba(4,8,14,0.36), inset -10px -6px 14px rgba(0,0,0,0.14);
+      opacity: 0.95;
+    }
+
+    /* Aseguramos que el contenido quede por encima del fondo fijo */
+    h1, .contenedor, .sorpresa, .corazon {
+      position: relative;
+      z-index: 4;
+    }
+
+    /* Texto principal: SIN brillo/text-shadow */
     h1 {
       font-size: 1.6rem;
       max-width: 85%;
+      line-height: 1.4;
       color: #ffe6f2;
       margin: 18px 12px 0;
     }
 
-    .contenedor {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      width: 260px;
-      background-color: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px);
-      border-radius: 10px;
-      padding: 12px;
-      z-index: 999;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    /* Contenedor del QR / contraseña */
+    /* Contenedor pequeño y fijo en esquina (ej. esquina superior derecha) */
+.contenedor {
+  position: fixed;      /* fijo para que quede en la esquina al hacer scroll */
+  top: 18px;            /* separación desde arriba */
+  right: 18px;          /* separación desde la derecha (cambia a left:18px si querés a la izquierda) */
+  width: 260px;         /* ancho reducido */
+  max-width: 90%;
+  padding: 12px;        /* padding reducido */
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.60); /* un poco más oscuro para legibilidad */
+  backdrop-filter: blur(4px);
+  z-index: 999;         /* encima del resto */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+/* Títulos más pequeños dentro del contenedor */
+.contenedor h2 { font-size: 1rem; margin: 0 0 6px; }
+.contenedor p { font-size: 0.85rem; margin: 0 0 8px; color: #ffd9e8; }
+
+/* QR preview más compacto */
+#qr-preview {
+  min-height: 64px;
+  max-height: 88px;
+  overflow: hidden;
+}
+
+/* Inputs y botones más pequeños */
+.pw-input input[type="password"] {
+  min-width: 120px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+input[type="file"] { font-size: 0.9rem; }
+
+/* Botones compactos */
+.contenedor button {
+  padding: 8px 10px;
+  font-size: 0.92rem;
+  border-radius: 8px;
+}
+
+/* Espaciado interior reducido */
+.pw-input { gap: 6px; margin-top: 8px; }
+
+/* Si querés que los botones queden uno encima del otro (más compacto) */
+.contenedor .btn-row { display:flex; gap:8px; justify-content:center; }
+
+/* En pantallas pequeñas (móvil) quitamos position:fixed para no tapar contenido */
+@media (max-width: 640px) {
+  .contenedor {
+    position: static;    /* vuelve al flujo normal */
+    width: 92%;
+    margin: 18px auto 0;
+    right: auto;
+    top: auto;
+    padding: 14px;
+  }
+  /* botones apilados en móvil */
+  .contenedor .btn-row { flex-direction: column; }
+}
+
+    .status-ok { color: #b7ffcc; }
+    .status-err { color: #ffb6c1; }
+
+    /* Entrada por contraseña */
+    .pw-input { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:8px; }
+    .pw-input input[type="password"] {
+      padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02); color:#fff; outline:none; min-width:170px;
     }
+    .pw-input button { background:#6bd3a8; color:#041014; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
+    .pw-input button:hover { filter:brightness(0.95); }
 
-    .contenedor h2 { font-size: 1rem; margin: 0 0 6px; color: #ffd9e8; }
-    .contenedor p { font-size: 0.85rem; color: #ffd9e8; }
-
-    #qr-preview { min-height: 64px; }
-
+    /* Sorpresa oculta (se muestra inline cuando se ingresa correctamente) */
     .sorpresa {
       display: none;
       margin-top: 18px;
       width: 100%;
       max-width: 720px;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.36);
       border-radius: 12px;
       padding: 18px;
+      z-index: 5;
       backdrop-filter: blur(4px);
       box-shadow: 0 12px 40px rgba(0,0,0,0.6);
       animation: fadeIn 600ms ease forwards;
@@ -68,11 +206,10 @@
     .sorpresa .reveal-images {
       display:flex;
       gap: 12px;
+      flex-wrap:wrap;
       justify-content:center;
       align-items:center;
-      flex-wrap: wrap;
     }
-
     .sorpresa img {
       max-width: 320px;
       width: calc(50% - 12px);
@@ -80,59 +217,189 @@
       object-fit: cover;
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
     }
+    .sorpresa p { color:#ffdfe9; margin-top:10px; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
     @media (max-width: 640px) {
-      .contenedor {
-        position: static;
-        width: 92%;
-        margin: 18px auto 0;
-      }
-      .sorpresa img {
-        width: 100%;
-        max-width: 100%;
-      }
+      .luna { width: 78px; height: 78px; right: 34px; top: 34px; }
+      .moon-glow { width: 260px; height: 260px; right: 4%; top: 4%; transform: translate(6%,4%); }
+      h1 { font-size: 1.15rem; }
+      .sorpresa img { width: 100%; max-width: 100%; }
+      .pw-input { flex-direction: column; gap:8px; }
+      .pw-input input[type="password"] { width: 100%; min-width: 0; }
     }
   </style>
 </head>
 <body>
+  <!-- Capas de estrellas y luna (fijas para no interferir con el scroll) -->
+  <div class="stars" aria-hidden="true"></div>
+  <div class="stars--mid" aria-hidden="true"></div>
+  <div class="stars--far" aria-hidden="true"></div>
+
+  <div class="moon-glow" aria-hidden="true"></div>
+  <div class="luna" aria-hidden="true"></div>
+
   <h1>Viste? al final te gane</h1>te amo <3
 
-  <div class="contenedor">
+  <div class="contenedor" role="region" aria-label="Acceso a sorpresa">
     <h2>Entrada ultra mega secreta booe💌</h2>
-    <p>Para ingresar, escaneá el QR o ingresá la contraseña.</p>
-    <input id="pw" type="password" placeholder="Contraseña secreta" />
-    <button id="pwButton">Ingresar</button>
-    <p id="pwStatus"></p>
-  </div>
+    <p style="color:#ffd9e8; margin-bottom:10px;">Para ingresár escaneá ESTA nono era el QR o ingresá la contraseña</p>
 
-  <div id="sorpresa" class="sorpresa">
-    <p>Cuántos intentos habrás hecho amor? Te quemé la cabeza pensando?</p>
-    <div class="reveal-images">
-      <img src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Ustedes con barbijo" />
-      <img src="https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a" alt="Papelito" />
+    <div id="qr-preview">QR aqui (era invisible lol)</div>
+
+    <!-- input para subir imagen del QR -->
+    <input id="qrFile" type="file" accept="image/*" />
+
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
+      <button id="startCamera">Usar camara</button>
+      <button id="fake-scan">QR de testeo</button>
+    </div>
+
+    <p id="status" style="min-height:20px; margin-top:10px;"></p>
+
+    <!-- Ingreso por contraseña -->
+    <div style="margin-top: 10px;">
+      <label for="pw" style="color:#ffd9e8; font-size:0.95rem;">O ingresá con la contraseña</label>
+      <div class="pw-input" role="group" aria-label="Ingreso por contraseña">
+        <input id="pw" type="password" placeholder="Contraseña secreta" aria-label="Contraseña secreta" />
+        <button id="pwButton" type="button">Ingresar</button>
+      </div>
+
+      <div id="pwStatus" style="margin-top:8px;" aria-live="polite"></div>
     </div>
   </div>
 
+  <!-- Sorpresa: imágenes (se mostrarán aquí en la misma página al desbloquear) -->
+  <div id="sorpresa" class="sorpresa" aria-hidden="true">
+    <p>Cuantos intentos habrás echo amor? te queme la cabeza pensando?</p>Elige un capitulo:
+    <div class="reveal-images">
+      <!-- Uso las URLs de los archivos adjuntos que pegaste -->
+      <img id="revealImg1" src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Imagen sorpresa 1" />
+      <img id="revealImg2" src="https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a" alt="Imagen sorpresa 2" />
+    </div>
+    <p style="font-size:0.95rem; opacity:0.95;">Si querés que aparezca otra cosa (texto, audio o vídeo), lo agrego aquí mismo.</p>
+  </div>
+
+  <div class="corazon" style="z-index:4; position:relative; margin-top:12px;">❤️‍🩹</div>
+
   <script>
-    const SECRET_PASSWORD = 'aceituna';
+    // --- Comportamiento cámara (demo simple) ---
+    const startCamera = document.getElementById('startCamera');
+    const status = document.getElementById('status');
+
+    startCamera.addEventListener('click', async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        status.textContent = "✅ Cámara iniciada correctamente. (Cerraré la cámara en este demo)";
+        status.className = 'status-ok';
+        stream.getTracks().forEach(track => track.stop());
+      } catch (err) {
+        status.textContent = "❌ Error al iniciar la cámara.";
+        status.className = 'status-err';
+      }
+    });
+
+    // --- Lógica para mostrar la sorpresa dentro de la misma página ---
+    const SECRET_PASSWORD = 'amor2025'; // <-- ajustá si querés otra
     const pwInput = document.getElementById('pw');
     const pwButton = document.getElementById('pwButton');
     const pwStatus = document.getElementById('pwStatus');
     const sorpresa = document.getElementById('sorpresa');
+    const qrFile = document.getElementById('qrFile');
+    const fakeScan = document.getElementById('fake-scan');
 
-    pwButton.addEventListener('click', () => {
-      if (pwInput.value === SECRET_PASSWORD) {
-        sorpresa.style.display = 'block';
-        pwStatus.textContent = '✅ Acceso concedido.';
-        setTimeout(() => sorpresa.scrollIntoView({ behavior: 'smooth' }), 300);
+    function showAccessGranted(source) {
+      sorpresa.style.display = 'block';
+      sorpresa.setAttribute('aria-hidden', 'false');
+      if (source) {
+        pwStatus.textContent = ✅ Acceso concedido (${source}).;
+        pwStatus.className = 'status-ok';
       } else {
-        pwStatus.textContent = '❌ Contraseña incorrecta.';
+        pwStatus.textContent = '✅ Acceso concedido.';
+        pwStatus.className = 'status-ok';
+      }
+      setTimeout(() => {
+        sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 120);
+    }
+
+    function showAccessDenied() {
+      pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
+      pwStatus.className = 'status-err';
+    }
+
+    // Contraseña
+    pwButton.addEventListener('click', () => {
+      const val = pwInput.value || '';
+      if (val === SECRET_PASSWORD) {
+        showAccessGranted('contraseña');
+      } else {
+        showAccessDenied();
       }
     });
+    pwInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') pwButton.click();
+    });
+
+    // Subir imagen QR — acá se considera válida inmediatamente al subir (demo)
+    qrFile.addEventListener('change', (e) => {
+      if (qrFile.files && qrFile.files.length > 0) {
+        const file = qrFile.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          const preview = document.getElementById('qr-preview');
+          preview.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = reader.result;
+          img.alt = 'QR subido';
+          img.style.maxHeight = '88px';
+          img.style.borderRadius = '6px';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+
+        showAccessGranted('QR (imagen subida)');
+      }
+    });
+
+    // Simular QR
+    fakeScan.addEventListener('click', () => {
+      showAccessGranted('QR (simulado)');
+    });
+
+    // Inicial: ocultar la sorpresa
+    sorpresa.style.display = 'none';
+    sorpresa.setAttribute('aria-hidden', 'true');
+
+    // Verificador rápido: avisos si las URLs de attachments fallan en cargar
+    (function checkAttachments() {
+      const imgsToCheck = [
+        { url: 'https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454', name: 'Fondo (papelito)' },
+        { url: 'https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329', name: 'Reveal 1' },
+        { url: 'https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a', name: 'Reveal 2' }
+      ];
+      imgsToCheck.forEach(i => {
+        const tmp = new Image();
+        tmp.onload = () => console.log(${i.name} cargada OK: ${i.url});
+        tmp.onerror = () => {
+          console.warn(${i.name} NO se encuentra: ${i.url});
+          const m = document.createElement('div');
+          m.style.color = '#ffb6c1';
+          m.style.background = 'rgba(0,0,0,0.45)';
+          m.style.padding = '8px';
+          m.style.borderRadius = '8px';
+          m.style.margin = '8px';
+          m.textContent = ⚠️ No se pudo cargar: ${i.url}. Si usás GitHub, asegurate de usar la URL "raw" o subir los archivos al repo/public.;
+          document.body.insertBefore(m, document.body.firstChild);
+          // fallback de fondo si no carga
+          if (i.name.includes('Fondo')) {
+            document.body.style.background = 'linear-gradient(180deg,#081227,#000009)';
+          }
+        };
+        tmp.src = i.url;
+      });
+    })();
   </script>
 </body>
+</html>
