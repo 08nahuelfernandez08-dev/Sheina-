@@ -9,7 +9,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
 
-    /* Nota: coloca la foto del papelito en /images/papelito.jpg (o ajustá la ruta más abajo) */
+    /*
+      Nota: este archivo usa las imágenes que indicaste:
+      - papelito.jpeg  (fondo principal)
+      - Luna.jpeg      (imagen 1 de la sorpresa)
+      - covid.jpeg     (imagen 2 de la sorpresa)
+
+      Coloca esos 3 archivos en la misma carpeta que este HTML (o ajustá las rutas abajo).
+    */
     body {
       margin: 0;
       min-height: 100vh;
@@ -17,7 +24,7 @@
       /* imagen de fondo + capa oscura para legibilidad */
       background:
         linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
-        url('images/papelito.jpg') center/cover no-repeat;
+        url('./papelito.jpeg') center/cover no-repeat;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -28,8 +35,6 @@
       position: relative;
     }
 
-    /* Si prefieres otra ruta/archivo, reemplaza 'images/papelito.jpg' por la ubicación real */
-
     /* Capas de estrellas & luna (intensidad reducida) */
     .stars, .stars--mid, .stars--far {
       position: absolute;
@@ -38,7 +43,7 @@
       background-repeat: repeat;
       z-index: 0;
       mix-blend-mode: screen;
-      opacity: 0.32; /* menos intensidad para no competir con la foto */
+      opacity: 0.32;
     }
 
     .stars {
@@ -90,16 +95,6 @@
       pointer-events: none;
       opacity: 0.95;
     }
-    .luna::before,
-    .luna::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 45%, rgba(255,255,255,0.01) 100%);
-      mix-blend-mode: multiply;
-    }
-    .luna::before { width: 42px; height: 42px; left: 42px; top: 64px; transform: rotate(-10deg); opacity: 0.75; }
-    .luna::after  { width: 24px; height: 24px; right: 38px; top: 98px; opacity: 0.78; }
 
     /* Texto principal: SIN brillo/text-shadow */
     h1 {
@@ -166,7 +161,7 @@
 
     /* Sorpresa oculta (se muestra inline cuando se ingresa correctamente) */
     .sorpresa {
-      display: none; /* se activará con JS */
+      display: none;
       margin-top: 18px;
       width: 100%;
       max-width: 720px;
@@ -198,7 +193,6 @@
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
-    /* Responsive */
     @media (max-width: 640px) {
       .luna { width: 78px; height: 78px; right: 34px; top: 34px; }
       .moon-glow { width: 260px; height: 260px; right: 4%; top: 4%; transform: translate(6%,4%); }
@@ -218,15 +212,15 @@
   <div class="moon-glow" aria-hidden="true"></div>
   <div class="luna" aria-hidden="true"></div>
 
-  <h1>Al final si te gane<br>t amo</h1>
+  <h1>Teníamos tanto amor en lo nuestro<br>que no supimos cómo sostenerlo 💔‍🩹</h1>
 
   <div class="contenedor" role="region" aria-label="Acceso a sorpresa">
-    <h2>Entrada ultra mega secreta booe 💌</h2>
-    <p style="color:#ffd9e8; margin-bottom:10px;">Para entrar a la sorpresa, escaneá ESTA nono para es el código QR con la cámara.</p>si.
+    <h2>Entrada ultra mega secreta 💌</h2>
+    <p style="color:#ffd9e8; margin-bottom:10px;">Escaneá el código QR o ingresá la contraseña para desbloquear la sorpresa en esta misma página.</p>
 
-    <div id="qr-preview">QR aqui (era invicible el qr)</div>
+    <div id="qr-preview">QR de ejemplo</div>
 
-    <!-- input para subir imagen del QR (al seleccionar, se considera válido y se muestra la sorpresa) -->
+    <!-- input para subir imagen del QR -->
     <input id="qrFile" type="file" accept="image/*" />
 
     <div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
@@ -248,14 +242,13 @@
     </div>
   </div>
 
-  <!-- Sorpresa: imágenes 2 y 1 (se mostrarán aquí en la misma página al desbloquear) -->
+  <!-- Sorpresa: imágenes (se mostrarán aquí en la misma página al desbloquear) -->
   <div id="sorpresa" class="sorpresa" aria-hidden="true">
     <p>🎉 Bienvenido/a — abrí la sorpresa abajo:</p>
     <div class="reveal-images">
-      <!-- Colocar las dos imágenes que se verán al ingresar.
-           Se usan paths: images/reveal-1.jpg y images/reveal-2.jpg (ajustá si tus nombres son distintos) -->
-      <img id="revealImg1" src="images/reveal-1.jpg" alt="Imagen sorpresa 1" />
-      <img id="revealImg2" src="images/reveal-2.jpg" alt="Imagen sorpresa 2" />
+      <!-- Usamos los nombres que subiste -->
+      <img id="revealImg1" src="./Luna.jpeg" alt="Imagen sorpresa 1" />
+      <img id="revealImg2" src="./covid.jpeg" alt="Imagen sorpresa 2" />
     </div>
     <p style="font-size:0.95rem; opacity:0.95;">Si querés que aparezca otra cosa (texto, audio o vídeo), lo agrego aquí mismo.</p>
   </div>
@@ -263,7 +256,7 @@
   <div class="corazon" style="z-index:4; position:relative; margin-top:12px;">❤️‍🩹</div>
 
   <script>
-    // --- Comportamiento cámara (mantengo función simple) ---
+    // --- Comportamiento cámara (demo simple) ---
     const startCamera = document.getElementById('startCamera');
     const status = document.getElementById('status');
 
@@ -272,7 +265,6 @@
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         status.textContent = "✅ Cámara iniciada correctamente. (Cerraré la cámara en este demo)";
         status.className = 'status-ok';
-        // cerramos inmediatamente para no dejar la cámara abierta en el demo
         stream.getTracks().forEach(track => track.stop());
       } catch (err) {
         status.textContent = "❌ Error al iniciar la cámara.";
@@ -281,8 +273,7 @@
     });
 
     // --- Lógica para mostrar la sorpresa dentro de la misma página ---
-    // Ajustá las rutas de las imágenes en el HTML si tus ficheros tienen otros nombres.
-    const SECRET_PASSWORD = 'aceituna' // <-- cambiá por la contraseña que quieras
+    const SECRET_PASSWORD = 'amor2025'; // <-- ajustá si querés otra
     const pwInput = document.getElementById('pw');
     const pwButton = document.getElementById('pwButton');
     const pwStatus = document.getElementById('pwStatus');
@@ -291,10 +282,8 @@
     const fakeScan = document.getElementById('fake-scan');
 
     function showAccessGranted(source) {
-      // Mostrar la sección de la sorpresa en la misma página
       sorpresa.style.display = 'block';
       sorpresa.setAttribute('aria-hidden', 'false');
-      // Informar al usuario
       if (source) {
         pwStatus.textContent = `✅ Acceso concedido (${source}).`;
         pwStatus.className = 'status-ok';
@@ -302,7 +291,6 @@
         pwStatus.textContent = '✅ Acceso concedido.';
         pwStatus.className = 'status-ok';
       }
-      // opcional: hacer scroll suave hasta la sorpresa
       setTimeout(() => {
         sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 120);
@@ -311,11 +299,9 @@
     function showAccessDenied() {
       pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
       pwStatus.className = 'status-err';
-      // ocultar sorpresa si se muestra por error
-      // (no forzamos ocultarla si ya fue mostrado por QR)
     }
 
-    // Manejo contraseña
+    // Contraseña
     pwButton.addEventListener('click', () => {
       const val = pwInput.value || '';
       if (val === SECRET_PASSWORD) {
@@ -328,11 +314,9 @@
       if (e.key === 'Enter') pwButton.click();
     });
 
-    // Manejo del input file para QR: cuando seleccionan una imagen de QR, consideramos válida y mostramos la sorpresa.
-    // En producción deberías decodificar el QR y validar su contenido en el servidor o con una librería de JS.
+    // Subir imagen QR — acá se considera válida inmediatamente al subir (demo)
     qrFile.addEventListener('change', (e) => {
       if (qrFile.files && qrFile.files.length > 0) {
-        // Previsualizamos el archivo en el recuadro QR preview (opcional)
         const file = qrFile.files[0];
         const reader = new FileReader();
         reader.onload = () => {
@@ -347,19 +331,47 @@
         };
         reader.readAsDataURL(file);
 
-        // Simulamos que el QR es válido y mostramos la sorpresa
         showAccessGranted('QR (imagen subida)');
       }
     });
 
-    // Botón de simulación para desarrollo / demo
+    // Simular QR
     fakeScan.addEventListener('click', () => {
       showAccessGranted('QR (simulado)');
     });
 
-    // Inicial: ocultar la sorpresa (por si está en cache)
+    // Inicial: ocultar la sorpresa
     sorpresa.style.display = 'none';
     sorpresa.setAttribute('aria-hidden', 'true');
+
+    // Comprobador rápido: si una imagen no carga, mostrará aviso en consola y en pantalla.
+    (function checkImages() {
+      const imgsToCheck = [
+        { url: './papelito.jpeg', name: 'Fondo papelito' },
+        { url: './Luna.jpeg', name: 'Sorpresa 1 (Luna)' },
+        { url: './covid.jpeg', name: 'Sorpresa 2 (covid)' }
+      ];
+      imgsToCheck.forEach(i => {
+        const tmp = new Image();
+        tmp.onload = () => console.log(`${i.name} cargada OK: ${i.url}`);
+        tmp.onerror = () => {
+          console.warn(`${i.name} NO se encuentra: ${i.url}`);
+          const m = document.createElement('div');
+          m.style.color = '#ffb6c1';
+          m.style.background = 'rgba(0,0,0,0.45)';
+          m.style.padding = '8px';
+          m.style.borderRadius = '8px';
+          m.style.margin = '8px';
+          m.textContent = `⚠️ No se encontró: ${i.url}. Revisá ruta/nombre del archivo.`;
+          document.body.insertBefore(m, document.body.firstChild);
+          // fallback ligero si es el fondo
+          if (i.name.includes('Fondo')) {
+            document.body.style.background = 'linear-gradient(180deg,#081227,#000009)';
+          }
+        };
+        tmp.src = i.url;
+      });
+    })();
   </script>
 </body>
 </html>
