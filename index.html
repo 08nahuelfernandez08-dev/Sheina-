@@ -147,92 +147,92 @@
     Hecho con 💜 por Nahuel
   </footer>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
 
-    const startCamera = document.getElementById('startCamera');
-    const status = document.getElementById('status');
-    const SECRET_PASSWORD = 'amor2025';
-    const pwInput = document.getElementById('pw');
-    const pwButton = document.getElementById('pwButton');
-    const pwStatus = document.getElementById('pwStatus');
-    const sorpresa = document.getElementById('sorpresa');
-    const qrFile = document.getElementById('qrFile');
-    const fakeScan = document.getElementById('fake-scan');
+  const startCamera = document.getElementById('startCamera');
+  const status = document.getElementById('status');
+  const SECRET_PASSWORD = 'amor2025';
+  const pwInput = document.getElementById('pw');
+  const pwButton = document.getElementById('pwButton');
+  const pwStatus = document.getElementById('pwStatus');
+  const sorpresa = document.getElementById('sorpresa');
+  const qrFile = document.getElementById('qrFile');
+  const fakeScan = document.getElementById('fake-scan');
 
-    // Iniciar cámara
-    startCamera.addEventListener('click', async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        status.textContent = "✅ Cámara iniciada correctamente. (Cerraré la cámara en este demo)";
-        status.className = 'status-ok';
-        stream.getTracks().forEach(track => track.stop());
-      } catch (err) {
-        status.textContent = "❌ Error al iniciar la cámara.";
-        status.className = 'status-err';
-      }
-    });
-
-    // Mostrar sorpresa con efecto fade-in
-    function showAccessGranted(source) {
-      sorpresa.style.display = 'block';
-      sorpresa.setAttribute('aria-hidden', 'false');
-      sorpresa.classList.add('fade-in');
-      pwStatus.textContent = ✅ Acceso concedido (${source}).;
-      pwStatus.className = 'status-ok';
-      setTimeout(() => {
-        sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 200);
+  // Iniciar cámara
+  startCamera.addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      status.textContent = "✅ Cámara iniciada correctamente. (Cerraré la cámara en este demo)";
+      status.className = 'status-ok';
+      stream.getTracks().forEach(track => track.stop());
+    } catch (err) {
+      status.textContent = "❌ Error al iniciar la cámara.";
+      status.className = 'status-err';
     }
-
-    function showAccessDenied() {
-      pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
-      pwStatus.className = 'status-err';
-    }
-
-    // Evento botón de contraseña
-    pwButton.addEventListener('click', () => {
-      const val = pwInput.value.trim();
-      if (val === SECRET_PASSWORD) {
-        showAccessGranted('contraseña');
-      } else {
-        showAccessDenied();
-      }
-    });
-
-    // Enter también activa el botón
-    pwInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') pwButton.click();
-    });
-
-    // QR manual
-    qrFile.addEventListener('change', (e) => {
-      if (qrFile.files && qrFile.files.length > 0) {
-        const file = qrFile.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          const preview = document.getElementById('qr-preview');
-          preview.innerHTML = '';
-          const img = document.createElement('img');
-          img.src = reader.result;
-          img.alt = 'QR subido';
-          img.style.maxHeight = '88px';
-          img.style.borderRadius = '6px';
-          preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-        showAccessGranted('QR (imagen subida)');
-      }
-    });
-
-    // QR de prueba
-    fakeScan.addEventListener('click', () => {
-      showAccessGranted('QR (simulado)');
-    });
-
-    // Inicializar sorpresa oculta
-    sorpresa.style.display = 'none';
-    sorpresa.setAttribute('aria-hidden', 'true');
   });
-  </script>
+
+  // Mostrar sorpresa con efecto fade-in
+  function showAccessGranted(source) {
+    sorpresa.style.display = 'block';
+    sorpresa.setAttribute('aria-hidden', 'false');
+    sorpresa.classList.add('fade-in');
+    pwStatus.textContent = ✅ Acceso concedido (${source}).;
+    pwStatus.className = 'status-ok';
+    setTimeout(() => {
+      sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+
+  function showAccessDenied() {
+    pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
+    pwStatus.className = 'status-err';
+  }
+
+  // Evento botón de contraseña
+  pwButton.addEventListener('click', () => {
+    const val = pwInput.value.trim();
+    if (val === SECRET_PASSWORD) {
+      showAccessGranted('contraseña');
+    } else {
+      showAccessDenied();
+    }
+  });
+
+  // Enter también activa el botón
+  pwInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') pwButton.click();
+  });
+
+  // QR manual
+  qrFile.addEventListener('change', (e) => {
+    if (qrFile.files && qrFile.files.length > 0) {
+      const file = qrFile.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const preview = document.getElementById('qr-preview');
+        preview.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = reader.result;
+        img.alt = 'QR subido';
+        img.style.maxHeight = '88px';
+        img.style.borderRadius = '6px';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+      showAccessGranted('QR (imagen subida)');
+    }
+  });
+
+  // QR de prueba
+  fakeScan.addEventListener('click', () => {
+    showAccessGranted('QR (simulado)');
+  });
+
+  // Inicializar sorpresa oculta
+  sorpresa.style.display = 'none';
+  sorpresa.setAttribute('aria-hidden', 'true');
+});
+</script>
 </body>
