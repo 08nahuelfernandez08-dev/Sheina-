@@ -1,322 +1,177 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mira la luna🌙</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mira la luna — Debug</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow-y: auto;
-      background:
-        linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
-        url('https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a') center/cover no-repeat;
-      background-attachment: fixed;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      position: relative;
-    }
-
-    h1, .contenedor, .sorpresa, .corazon {
-      position: relative;
-      z-index: 4;
-    }
-
-    h1 {
-      font-size: 1.6rem;
-      max-width: 85%;
-      line-height: 1.4;
-      color: #ffe6f2;
-      margin: 18px 12px 0;
-    }
-
-    .contenedor {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      width: 260px;
-      max-width: 90%;
-      padding: 12px;
-      border-radius: 10px;
-      background-color: rgba(0,0,0,0.60);
-      backdrop-filter: blur(4px);
-      z-index: 999;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    }
-
-    .contenedor h2 { font-size: 1rem; margin: 0 0 6px; }
-    .contenedor p { font-size: 0.85rem; margin: 0 0 8px; color: #ffd9e8; }
-
-    #qr-preview {
-      min-height: 64px;
-      max-height: 88px;
-      overflow: hidden;
-    }
-
-    input[type="file"] { font-size: 0.9rem; }
-
-    .contenedor button {
-      padding: 8px 10px;
-      font-size: 0.92rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .pw-input { gap: 6px; margin-top: 8px; display: flex; justify-content: center; }
-
-    .contenedor .btn-row { display:flex; gap:8px; justify-content:center; }
-
-    @media (max-width: 640px) {
-      .contenedor {
-        position: static;
-        width: 92%;
-        margin: 18px auto 0;
-        right: auto;
-        top: auto;
-        padding: 14px;
-      }
-      .contenedor .btn-row { flex-direction: column; }
-    }
-
-    .status-ok { color: #b7ffcc; }
-    .status-err { color: #ffb6c1; }
-
-    .pw-input input[type="password"] {
-      padding:8px 10px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.02);
-      color:#fff;
-      outline:none;
-      min-width:170px;
-    }
-
-    .pw-input button {
-      background:#6bd3a8;
-      color:#041014;
-      padding:8px 12px;
-      border-radius:8px;
-      border:none;
-      cursor:pointer;
-    }
-
-    .pw-input button:hover { filter:brightness(0.95); }
-
-    .sorpresa {
-      display: none;
-      margin-top: 18px;
-      width: 100%;
-      max-width: 720px;
-      background: rgba(0,0,0,0.36);
-      border-radius: 12px;
-      padding: 18px;
-      z-index: 5;
-      backdrop-filter: blur(4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-      animation: fadeIn 600ms ease forwards;
-    }
-
-    .sorpresa .reveal-images {
-      display:flex;
-      gap: 12px;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:center;
-    }
-
-    .sorpresa img {
-      max-width: 320px;
-      width: calc(50% - 12px);
-      border-radius: 10px;
-      object-fit: cover;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    }
-
-    .sorpresa p { color:#ffdfe9; margin-top:10px; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-
-    @media (max-width: 640px) {
-      h1 { font-size: 1.15rem; }
-      .sorpresa img { width: 100%; max-width: 100%; }
-      .pw-input { flex-direction: column; gap:8px; }
-      .pw-input input[type="password"] { width: 100%; min-width: 0; }
-    }
-
-    /* pequeño helper debug (puedes quitar luego) */
-    #debugMsg { font-size:0.8rem; color:#ffd9e8; margin-top:6px; min-height:18px; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:
+      linear-gradient(rgba(0,0,0,0.36),rgba(0,0,0,0.36)),
+      url('https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a') center/cover no-repeat;
+      color:white;font-family:Arial, sans-serif;padding:20px}
+    .contenedor{position:fixed;right:18px;top:18px;width:300px;padding:12px;border-radius:10px;background:rgba(0,0,0,0.6)}
+    .pw-input{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px}
+    input[type="password"]{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02);color:#fff}
+    button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+    #pwButton{background:#6bd3a8;color:#041014}
+    #pwStatus{min-height:18px;margin-top:8px}
+    #debugBox{margin-top:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.03);color:#ffd9e8;font-size:13px;min-height:24px}
   </style>
 </head>
 <body>
-
-  <h1>Viste? al final te gane</h1>te amo <3
-
+  <h1>Viste? al final te gane</h1>
   <div class="contenedor" role="region" aria-label="Acceso a sorpresa">
-    <h2>Entrada ultra mega secreta booe💌</h2>
-    <p style="color:#ffd9e8; margin-bottom:10px;">Para ingresár escaneá ESTA nono era el QR o ingresá la contraseña</p>
+    <h2>Entrada ultra mega secreta</h2>
+    <p>Para ingresár... o ingresá la contraseña</p>
 
-    <div id="qr-preview">QR aqui (era invisible lol)</div>
-
+    <div id="qr-preview">QR aqui</div>
     <input id="qrFile" type="file" accept="image/*" />
 
-    <div style="display:flex; gap:10px; justify-content:center; margin-top:6px;">
+    <div style="display:flex;gap:8px;margin-top:8px">
       <button id="startCamera">Usar camara</button>
       <button id="fake-scan">QR de testeo</button>
     </div>
 
-    <p id="status" style="min-height:20px; margin-top:10px;"></p>
-
-    <div style="margin-top: 10px;">
-      <label for="pw" style="color:#ffd9e8; font-size:0.95rem;">O ingresá con la contraseña</label>
-      <div class="pw-input" role="group" aria-label="Ingreso por contraseña">
-        <input id="pw" type="password" placeholder="Contraseña secreta" aria-label="Contraseña secreta" />
-        <button id="pwButton" type="button">Ingresar</button>
-      </div>
-
-      <div id="pwStatus" style="margin-top:8px;" aria-live="polite"></div>
-      <div id="debugMsg" aria-hidden="true"></div>
+    <div class="pw-input" style="margin-top:8px">
+      <!-- Agrego onclick inline COMO FALLBACK -->
+      <input id="pw" type="password" placeholder="Contraseña secreta" aria-label="Contraseña secreta" />
+      <button id="pwButton" type="button" onclick="inlinePwHandler()">Ingresar</button>
     </div>
+
+    <div id="pwStatus" aria-live="polite"></div>
+    <div id="debugBox">Estado debug: inicializando...</div>
   </div>
 
-  <div id="sorpresa" class="sorpresa" aria-hidden="true">
-    <p>Cuantos intentos habrás echo amor? te queme la cabeza pensando?</p>Elige un capitulo:
-    <div class="reveal-images">
-      <img id="revealImg1" src="https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329" alt="Imagen sorpresa 1" />
-      <img id="revealImg2" src="https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454" alt="Imagen sorpresa 2 (papelito)" />
-    </div>
-    <p style="font-size:0.95rem; opacity:0.95;">Si querés que aparezca otra cosa (texto, audio o vídeo), lo agrego aquí mismo.</p>
+  <div id="sorpresa" style="display:none;margin-top:120px;color:#ffd9e8">
+    <h3>🎉 Sorpresa desbloqueada</h3>
+    <p>Si ves esto, la autenticación funcionó.</p>
   </div>
-
-  <div class="corazon" style="z-index:4; position:relative; margin-top:12px;">❤️‍🩹</div>
 
   <script>
     (function () {
-      // CONSTANTE: cambiá aquí la contraseña si querés
       const SECRET_PASSWORD = 'amor2025';
+      const debugBox = () => document.getElementById('debugBox');
+      // Handler inline (falla segura si JS está bloqueado? al menos muestra algo)
+      window.inlinePwHandler = function () {
+        try {
+          console.log('inlinePwHandler invoked');
+          debugBox().textContent = 'inline handler: clic detectado';
+          // delego al mismo flujo
+          attemptPasswordCheck();
+        } catch (e) {
+          console.error('inline handler error', e);
+          debugBox().textContent = 'inline handler error: ' + e.message;
+        }
+      };
 
-      // Ejecutar cuando el DOM esté listo (evita problemas si el script se mueve)
+      // Comprueba si el DOM ya está listo
       document.addEventListener('DOMContentLoaded', () => {
-        const startCameraBtn = document.querySelector('#startCamera');
-        const fakeScanBtn = document.querySelector('#fake-scan');
-        const qrFileInput = document.querySelector('#qrFile');
-        const statusEl = document.querySelector('#status');
-        const pwInput = document.querySelector('#pw');
-        const pwButton = document.querySelector('#pwButton');
-        const pwStatus = document.querySelector('#pwStatus');
-        const sorpresa = document.querySelector('#sorpresa');
-        const debugMsg = document.querySelector('#debugMsg');
+        console.log('DOMContentLoaded');
+        debugBox().textContent = 'DOMContentLoaded — inicializando listeners...';
 
-        // Validaciones básicas: si falta algo, mostramos en debug
-        if (!pwInput) debugMsg.textContent = 'ERROR: No se encontró input #pw';
-        if (!pwButton) debugMsg.textContent += (debugMsg.textContent ? ' • ' : '') + 'ERROR: No se encontró botón #pwButton';
+        const pwInput = document.getElementById('pw');
+        const pwButton = document.getElementById('pwButton');
+        const fakeScanBtn = document.getElementById('fake-scan');
+        const qrFile = document.getElementById('qrFile');
+        const startCamera = document.getElementById('startCamera');
+        const pwStatus = document.getElementById('pwStatus');
+        const sorpresa = document.getElementById('sorpresa');
 
-        // función que muestra la sección sorpresa
-        function showAccessGranted(source) {
-          sorpresa.style.display = 'block';
-          sorpresa.setAttribute('aria-hidden', 'false');
-          pwStatus.textContent = ✅ Acceso concedido (${source}).;
-          pwStatus.className = 'status-ok';
-          // pequeño scroll para que se note la sorpresa
-          setTimeout(() => {
-            sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 120);
+        if (!pwButton) {
+          console.warn('No se encontró #pwButton');
+          debugBox().textContent = 'ERROR: No se encontró #pwButton';
+          return;
         }
 
-        function showAccessDenied() {
-          pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
-          pwStatus.className = 'status-err';
-        }
+        // 1) Listener directo
+        pwButton.addEventListener('click', (e) => {
+          console.log('Listener directo: click en pwButton');
+          debugBox().textContent = 'Listener directo: recibido click';
+          attemptPasswordCheck();
+        });
 
-        // Manejo click del botón Ingresar: con protecciones
-        if (pwButton) {
-          pwButton.addEventListener('click', (ev) => {
-            ev.preventDefault(); // por si está dentro de form en el futuro
-            debugMsg.textContent = 'Evento click recibido en "Ingresar"'; // mensaje quick-debug
+        // 2) Listener delegado a nivel documento (fallback si algo captura/stopPropagation)
+        document.addEventListener('click', (e) => {
+          const t = e.target;
+          if (t && (t.id === 'pwButton' || t.closest && t.closest('#pwButton'))) {
+            console.log('Listener delegado: click detectado en pwButton');
+            debugBox().textContent = 'Listener delegado: recibido click';
+            // Nota: no evitamosDefault aqui porque el directo lo hace también
+            attemptPasswordCheck();
+          }
+        });
+
+        // Enter en input
+        pwInput.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') {
+            console.log('Enter presionado en input pw');
+            debugBox().textContent = 'Enter en input: activando ingreso';
+            attemptPasswordCheck();
+          }
+        });
+
+        // fake scan
+        fakeScanBtn.addEventListener('click', () => {
+          console.log('fake-scan clicked');
+          debugBox().textContent = 'QR de testeo: acceso concedido';
+          unlock('QR de testeo');
+        });
+
+        // qr file
+        qrFile.addEventListener('change', () => {
+          if (qrFile.files && qrFile.files.length) {
+            debugBox().textContent = 'QR cargado — acceso concedido';
+            unlock('QR subido');
+          }
+        });
+
+        // cámara demo
+        startCamera.addEventListener('click', async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            debugBox().textContent = 'Cámara iniciada (demo)';
+            stream.getTracks().forEach(t => t.stop());
+          } catch (err) {
+            debugBox().textContent = 'Error al iniciar cámara';
+            console.warn(err);
+          }
+        });
+
+        // función que valida
+        function attemptPasswordCheck() {
+          try {
             const val = (pwInput && pwInput.value) ? pwInput.value.trim() : '';
-            // chequeo simple y respuesta
-            if (val.length === 0) {
-              pwStatus.textContent = 'Escribí la contraseña primero.';
+            console.log('attemptPasswordCheck, valor:', val ? '[RELLENO]' : '(vacío)');
+            if (!val) {
+              pwStatus.textContent = '❗ Escribí la contraseña primero.';
               pwStatus.className = 'status-err';
+              debugBox().textContent = 'Intento: campo vacío';
               return;
             }
             if (val === SECRET_PASSWORD) {
-              showAccessGranted('contraseña');
+              unlock('contraseña');
             } else {
-              showAccessDenied();
+              pwStatus.textContent = '❌ Contraseña incorrecta.';
+              pwStatus.className = 'status-err';
+              debugBox().textContent = 'Intento: contraseña incorrecta';
             }
-          });
+          } catch (e) {
+            console.error('Error en attemptPasswordCheck', e);
+            debugBox().textContent = 'Error: ' + e.message;
+          }
         }
 
-        // Soporte para Enter sobre el input
-        if (pwInput) {
-          pwInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-              // simular click: más robusto que triggerear 'submit'
-              if (pwButton) pwButton.click();
-            }
-          });
+        function unlock(source) {
+          document.getElementById('sorpresa').style.display = 'block';
+          pwStatus.textContent = ✅ Acceso concedido (${source});
+          pwStatus.className = 'status-ok';
+          debugBox().textContent = 'Acceso concedido: ' + source;
         }
 
-        // fake scan y carga de QR (igual que antes)
-        if (fakeScanBtn) {
-          fakeScanBtn.addEventListener('click', () => {
-            debugMsg.textContent = 'QR de testeo activado';
-            showAccessGranted('QR de testeo');
-          });
-        }
-
-        if (qrFileInput) {
-          qrFileInput.addEventListener('change', () => {
-            if (qrFileInput.files && qrFileInput.files.length > 0) {
-              const reader = new FileReader();
-              reader.onload = () => {
-                const preview = document.getElementById('qr-preview');
-                preview.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.alt = 'QR subido';
-                img.style.maxHeight = '88px';
-                img.style.borderRadius = '6px';
-                preview.appendChild(img);
-              };
-              reader.readAsDataURL(qrFileInput.files[0]);
-              debugMsg.textContent = 'QR subido — acceso concedido';
-              showAccessGranted('QR subido');
-            }
-          });
-        }
-
-        // Cámara demo
-        if (startCameraBtn) {
-          startCameraBtn.addEventListener('click', async () => {
-            try {
-              const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-              statusEl.textContent = "✅ Cámara iniciada correctamente (demo)";
-              statusEl.className = 'status-ok';
-              // detenemos inmediatamente en este demo
-              stream.getTracks().forEach(t => t.stop());
-            } catch (err) {
-              statusEl.textContent = "❌ Error al iniciar la cámara.";
-              statusEl.className = 'status-err';
-            }
-          });
-        }
-
-        // limpieza del debug pasado 3s (opcional)
-        setTimeout(() => { if (debugMsg) debugMsg.textContent = ''; }, 3000);
-      }); // fin DOMContentLoaded
+        // Indico que ya quedó todo conectado
+        setTimeout(() => { debugBox().textContent = 'Listo — listeners conectados'; }, 350);
+      }); // end DOMContentLoaded
     })();
   </script>
 </body>
