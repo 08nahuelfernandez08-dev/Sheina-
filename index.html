@@ -154,6 +154,9 @@
       .pw-input { flex-direction: column; gap:8px; }
       .pw-input input[type="password"] { width: 100%; min-width: 0; }
     }
+
+    /* pequeño helper debug (puedes quitar luego) */
+    #debugMsg { font-size:0.8rem; color:#ffd9e8; margin-top:6px; min-height:18px; }
   </style>
 </head>
 <body>
@@ -177,12 +180,13 @@
 
     <div style="margin-top: 10px;">
       <label for="pw" style="color:#ffd9e8; font-size:0.95rem;">O ingresá con la contraseña</label>
-      <div class="pw-input">
-        <input id="pw" type="password" placeholder="Contraseña secreta" />
+      <div class="pw-input" role="group" aria-label="Ingreso por contraseña">
+        <input id="pw" type="password" placeholder="Contraseña secreta" aria-label="Contraseña secreta" />
         <button id="pwButton" type="button">Ingresar</button>
       </div>
 
       <div id="pwStatus" style="margin-top:8px;" aria-live="polite"></div>
+      <div id="debugMsg" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -198,77 +202,122 @@
   <div class="corazon" style="z-index:4; position:relative; margin-top:12px;">❤️‍🩹</div>
 
   <script>
-    const SECRET_PASSWORD = 'amor2025';
+    (function () {
+      // CONSTANTE: cambiá aquí la contraseña si querés
+      const SECRET_PASSWORD = 'amor2025';
 
-    const startCamera = document.getElementById('startCamera');
-    const fakeScan = document.getElementById('fake-scan');
-    const qrFile = document.getElementById('qrFile');
-    const status = document.getElementById('status');
-    const pwInput = document.getElementById('pw');
-    const pwButton = document.getElementById('pwButton');
-    const pwStatus = document.getElementById('pwStatus');
-    const sorpresa = document.getElementById('sorpresa');
+      // Ejecutar cuando el DOM esté listo (evita problemas si el script se mueve)
+      document.addEventListener('DOMContentLoaded', () => {
+        const startCameraBtn = document.querySelector('#startCamera');
+        const fakeScanBtn = document.querySelector('#fake-scan');
+        const qrFileInput = document.querySelector('#qrFile');
+        const statusEl = document.querySelector('#status');
+        const pwInput = document.querySelector('#pw');
+        const pwButton = document.querySelector('#pwButton');
+        const pwStatus = document.querySelector('#pwStatus');
+        const sorpresa = document.querySelector('#sorpresa');
+        const debugMsg = document.querySelector('#debugMsg');
 
-    function showAccessGranted(source) {
-      sorpresa.style.display = 'block';
-      sorpresa.setAttribute('aria-hidden', 'false');
-      pwStatus.textContent = ✅ Acceso concedido (${source}).;
-      pwStatus.className = 'status-ok';
-      setTimeout(() => {
-        sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 120);
-    }
+        // Validaciones básicas: si falta algo, mostramos en debug
+        if (!pwInput) debugMsg.textContent = 'ERROR: No se encontró input #pw';
+        if (!pwButton) debugMsg.textContent += (debugMsg.textContent ? ' • ' : '') + 'ERROR: No se encontró botón #pwButton';
 
-    function showAccessDenied() {
-      pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
-      pwStatus.className = 'status-err';
-    }
+        // función que muestra la sección sorpresa
+        function showAccessGranted(source) {
+          sorpresa.style.display = 'block';
+          sorpresa.setAttribute('aria-hidden', 'false');
+          pwStatus.textContent = ✅ Acceso concedido (${source}).;
+          pwStatus.className = 'status-ok';
+          // pequeño scroll para que se note la sorpresa
+          setTimeout(() => {
+            sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 120);
+        }
 
-    pwButton.addEventListener('click', () => {
-      const val = pwInput.value.trim();
-      if (val === SECRET_PASSWORD) {
-        showAccessGranted('contraseña');
-      } else {
-        showAccessDenied();
-      }
-    });
+        function showAccessDenied() {
+          pwStatus.textContent = '❌ Contraseña incorrecta. Intentá de nuevo.';
+          pwStatus.className = 'status-err';
+        }
 
-    pwInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') pwButton.click();
-    });
+        // Manejo click del botón Ingresar: con protecciones
+        if (pwButton) {
+          pwButton.addEventListener('click', (ev) => {
+            ev.preventDefault(); // por si está dentro de form en el futuro
+            debugMsg.textContent = 'Evento click recibido en "Ingresar"'; // mensaje quick-debug
+            const val = (pwInput && pwInput.value) ? pwInput.value.trim() : '';
+            // chequeo simple y respuesta
+            if (val.length === 0) {
+              pwStatus.textContent = 'Escribí la contraseña primero.';
+              pwStatus.className = 'status-err';
+              return;
+            }
+            if (val === SECRET_PASSWORD) {
+              showAccessGranted('contraseña');
+            } else {
+              showAccessDenied();
+            }
+          });
+        }
 
-    fakeScan.addEventListener('click', () => {
-      showAccessGranted('QR de testeo');
-    });
+        // Soporte para Enter sobre el input
+        if (pwInput) {
+          pwInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              // simular click: más robusto que triggerear 'submit'
+              if (pwButton) pwButton.click();
+            }
+          });
+        }
 
-    qrFile.addEventListener('change', () => {
-      if (qrFile.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const preview = document.getElementById('qr-preview');
-          preview.innerHTML = '';
-          const img = document.createElement('img');
-          img.src = reader.result;
-          img.alt = 'QR subido';
-          img.style.maxHeight = '88px';
-          img.style.borderRadius = '6px';
-          preview.appendChild(img);
-        };
-        reader.readAsDataURL(qrFile.files[0]);
-        showAccessGranted('QR subido');
-      }
-    });
+        // fake scan y carga de QR (igual que antes)
+        if (fakeScanBtn) {
+          fakeScanBtn.addEventListener('click', () => {
+            debugMsg.textContent = 'QR de testeo activado';
+            showAccessGranted('QR de testeo');
+          });
+        }
 
-    startCamera.addEventListener('click', async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        status.textContent = "✅ Cámara iniciada correctamente (demo)";
-        status.className = 'status-ok';
-        stream.getTracks().forEach(track => track.stop());
-      } catch (err) {
-        status.textContent = "❌ Error al iniciar la cámara.";
-        status.className = 'status-err';
-      }
-    });
+        if (qrFileInput) {
+          qrFileInput.addEventListener('change', () => {
+            if (qrFileInput.files && qrFileInput.files.length > 0) {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const preview = document.getElementById('qr-preview');
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.alt = 'QR subido';
+                img.style.maxHeight = '88px';
+                img.style.borderRadius = '6px';
+                preview.appendChild(img);
+              };
+              reader.readAsDataURL(qrFileInput.files[0]);
+              debugMsg.textContent = 'QR subido — acceso concedido';
+              showAccessGranted('QR subido');
+            }
+          });
+        }
+
+        // Cámara demo
+        if (startCameraBtn) {
+          startCameraBtn.addEventListener('click', async () => {
+            try {
+              const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+              statusEl.textContent = "✅ Cámara iniciada correctamente (demo)";
+              statusEl.className = 'status-ok';
+              // detenemos inmediatamente en este demo
+              stream.getTracks().forEach(t => t.stop());
+            } catch (err) {
+              statusEl.textContent = "❌ Error al iniciar la cámara.";
+              statusEl.className = 'status-err';
+            }
+          });
+        }
+
+        // limpieza del debug pasado 3s (opcional)
+        setTimeout(() => { if (debugMsg) debugMsg.textContent = ''; }, 3000);
+      }); // fin DOMContentLoaded
+    })();
   </script>
 </body>
+</html>
