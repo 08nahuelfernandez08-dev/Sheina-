@@ -10,7 +10,7 @@
 
     body {
       margin: 0;
-      min-height: 100vh;yhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhyhg
+      min-height: 100vh;
       overflow-y: auto;
       background:
         linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)),
@@ -23,66 +23,6 @@
       font-family: 'Poppins', sans-serif;
       text-align: center;
       position: relative;
-    }
-
-    .stars, .stars--mid, .stars--far,
-    .moon-glow, .luna {
-      position: fixed;
-      pointer-events: none;
-      z-index: 0;
-      inset: 0;
-    }
-
-    .stars, .stars--mid, .stars--far {
-      background-repeat: repeat;
-      mix-blend-mode: screen;
-      opacity: 0.32;
-    }
-
-    .stars {
-      background-image: radial-gradient(circle, rgba(255,255,255,0.9) 0.6px, rgba(255,255,255,0.0) 1px);
-      background-size: 5px 5px;
-      animation: twinkle 10s infinite linear;
-    }
-    .stars--mid {
-      background-image: radial-gradient(circle, rgba(255,255,255,0.85) 1px, rgba(255,255,255,0.0) 1.5px);
-      background-size: 12px 12px;
-      animation: twinkle 16s infinite linear;
-    }
-    .stars--far {
-      background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1.6px, rgba(255,255,255,0.0) 2.4px);
-      background-size: 24px 24px;
-      animation: twinkle 26s infinite linear;
-      filter: blur(0.9px);
-    }
-    @keyframes twinkle {
-      0%   { opacity: 0.35; transform: scale(1); }
-      50%  { opacity: 0.12; transform: scale(0.998); }
-      100% { opacity: 0.35; transform: scale(1); }
-    }
-
-    .moon-glow {
-      inset: auto;
-      right: 6%;
-      top: 6%;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,245,210,0.03) 0%, rgba(255,245,210,0.008) 18%, rgba(255,245,210,0.0) 45%);
-      transform: translate(10%, 2%);
-      opacity: 0.7;
-    }
-
-    .luna {
-      inset: auto;
-      top: 72px;
-      right: 72px;
-      width: 110px;
-      height: 110px;
-      background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f2f4f6 28%, #d7dbe0 54%, rgba(200,200,200,0.10) 75%, rgba(0,0,0,0.0) 100%);
-      border-radius: 50%;
-      box-shadow: 0 8px 28px rgba(4,8,14,0.36), inset -10px -6px 14px rgba(0,0,0,0.14);
-      opacity: 0.95;
     }
 
     h1, .contenedor, .sorpresa, .corazon {
@@ -194,8 +134,6 @@ input[type="file"] { font-size: 0.9rem; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
     @media (max-width: 640px) {
-      .luna { width: 78px; height: 78px; right: 34px; top: 34px; }
-      .moon-glow { width: 260px; height: 260px; right: 4%; top: 4%; transform: translate(6%,4%); }
       h1 { font-size: 1.15rem; }
       .sorpresa img { width: 100%; max-width: 100%; }
       .pw-input { flex-direction: column; gap:8px; }
@@ -204,12 +142,7 @@ input[type="file"] { font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <div class="stars" aria-hidden="true"></div>
-  <div class="stars--mid" aria-hidden="true"></div>
-  <div class="stars--far" aria-hidden="true"></div>
-
-  <div class="moon-glow" aria-hidden="true"></div>
-  <div class="luna" aria-hidden="true"></div>
+  <!-- Eliminadas las capas de estrellas y luna -->
 
   <h1>Viste? al final te gane</h1>te amo <3
 
@@ -277,7 +210,7 @@ input[type="file"] { font-size: 0.9rem; }
     function showAccessGranted(source) {
       sorpresa.style.display = 'block';
       sorpresa.setAttribute('aria-hidden', 'false');
-      pwStatus.textContent = `✅ Acceso concedido (${source}).`;
+      pwStatus.textContent = ✅ Acceso concedido (${source}).;
       pwStatus.className = 'status-ok';
       setTimeout(() => {
         sorpresa.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -326,33 +259,6 @@ input[type="file"] { font-size: 0.9rem; }
 
     sorpresa.style.display = 'none';
     sorpresa.setAttribute('aria-hidden', 'true');
-
-    (function checkAttachments() {
-      const imgsToCheck = [
-        { url: 'https://github.com/user-attachments/assets/ee35b9f1-ecec-4612-9a84-91478130cd2a', name: 'Fondo (nuevo)' },
-        { url: 'https://github.com/user-attachments/assets/d9d3547f-5a15-42e5-9407-28251f965329', name: 'Reveal 1' },
-        { url: 'https://github.com/user-attachments/assets/cc27388d-7ef5-47ff-aab9-9e1640252454', name: 'Reveal 2 (papelito)' }
-      ];
-      imgsToCheck.forEach(i => {
-        const tmp = new Image();
-        tmp.onload = () => console.log(`${i.name} cargada OK: ${i.url}`);
-        tmp.onerror = () => {
-          console.warn(`${i.name} NO se encuentra: ${i.url}`);
-          const m = document.createElement('div');
-          m.style.color = '#ffb6c1';
-          m.style.background = 'rgba(0,0,0,0.45)';
-          m.style.padding = '8px';
-          m.style.borderRadius = '8px';
-          m.style.margin = '8px';
-          m.textContent = `⚠️ No se pudo cargar: ${i.url}. Si usás GitHub, asegurate de usar la URL "raw" o subir los archivos al repo/public.`;
-          document.body.insertBefore(m, document.body.firstChild);
-          if (i.name.includes('Fondo')) {
-            document.body.style.background = 'linear-gradient(180deg,#081227,#000009)';
-          }
-        };
-        tmp.src = i.url;
-      });
-    })();
   </script>
 </body>
 </html>
